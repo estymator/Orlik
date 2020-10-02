@@ -11,23 +11,27 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
-    Session session= new Session(this);
+    Session session;
+    private static final String TAG="MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        session= new Session(this);
         super.onCreate(savedInstanceState);
         if(session.getCredentials()==null)
         {
-            setContentView(R.layout.activity_login);
+            Log.v(TAG, "User niezalogowany");
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }else{
+            Log.v(TAG, "User zalogowany");
             setContentView(R.layout.activity_main);
             Toolbar toolbar = findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);

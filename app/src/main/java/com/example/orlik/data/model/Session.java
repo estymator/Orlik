@@ -9,25 +9,27 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Session {
     private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
-    public static final String UserSessionPreferencies = "userInformation";
+    public static final String UserSessionPreferencies = "com.example.Orlik.userInformation";
     public static final String PasswordKey = "passwordKey";
     public static final String UsernameKey = "usernameKey";
 
     public Session(Context context)
     {
         sharedPreferences = context.getSharedPreferences(UserSessionPreferencies, MODE_PRIVATE);
+        editor=sharedPreferences.edit();
     }
     public void setCredentials(String username, String password)
     {
-        sharedPreferences.edit().putString(UsernameKey,username);
-        sharedPreferences.edit().putString(PasswordKey,password);
+        editor.putString(UsernameKey,username);
+        editor.putString(PasswordKey,password);
     }
 
     public void logout()
     {
-        sharedPreferences.edit().clear();
-        sharedPreferences.edit().commit();
+        editor.clear();
+        editor.commit();
     }
     public String getCredentials()
     {
