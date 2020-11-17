@@ -5,6 +5,7 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -25,6 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.orlik.R;
+import com.example.orlik.data.model.Session;
+import com.example.orlik.data.model.User;
 import com.example.orlik.ui.login.LoginViewModel;
 import com.example.orlik.ui.login.LoginViewModelFactory;
 import com.example.orlik.ui.register.RegisterActivity;
@@ -35,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.v(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
@@ -50,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
             public void onChanged(@Nullable LoginFormState loginFormState) {
-                Log.v(TAG,"LoginFormState changed");
+
                 if (loginFormState == null) {
                     return;
                 }
@@ -78,6 +82,16 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
                 if (loginResult.getSuccess() != null) {
+                    Session sesja = new Session(getApplicationContext());
+                    User user = loginResult.getSuccess();
+                    try{
+                        sesja.setCredentials(user.getLogin(),loginResult.getPassword());
+                    }catch(Exception e)
+                    {
+                        Log.v(TAG,"Błąd zapisu danych logowania do sesji");
+                        
+                    }
+
                     updateUiWithUser(loginResult.getSuccess());
                     setResult(Activity.RESULT_OK);
                     Log.v(TAG,"Before finish()");
@@ -140,13 +154,13 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
+    private void updateUiWithUser(User model) {
+        String welcome = getString(R.string.welcome) + model.getLogin();
         // TODO : initiate successful logged in experience
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
-    private void showLoginFailed(@StringRes Integer errorString) {
+    private void showLoginFailed(String errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
     }
 

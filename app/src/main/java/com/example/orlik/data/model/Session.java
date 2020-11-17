@@ -3,6 +3,7 @@ package com.example.orlik.data.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -20,10 +21,19 @@ public class Session {
         sharedPreferences = context.getSharedPreferences(UserSessionPreferencies, MODE_PRIVATE);
         editor=sharedPreferences.edit();
     }
+
+    public Session(Context context, String[] tab)
+    {
+        sharedPreferences = context.getSharedPreferences(UserSessionPreferencies, MODE_PRIVATE);
+        editor=sharedPreferences.edit();
+        setCredentials(tab[0],tab[1]);
+    }
     public void setCredentials(String username, String password)
     {
+        Log.v("Zapisuje dane", " Session ");
         editor.putString(UsernameKey,username);
         editor.putString(PasswordKey,password);
+        editor.commit();
     }
 
     public void logout()
@@ -40,6 +50,18 @@ public class Session {
             return null;
         }else{
             return username+":"+password;
+        }
+    }
+
+    public String getLogin()
+    {
+        String username=sharedPreferences.getString(UsernameKey,null);
+
+        if(username==null)
+        {
+            return null;
+        }else{
+            return username;
         }
     }
 

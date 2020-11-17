@@ -2,30 +2,40 @@ package com.example.orlik.ui.login;
 
 import androidx.annotation.Nullable;
 
+import com.example.orlik.data.model.User;
+
 /**
  * Authentication result : success (user details) or error message.
  */
 class LoginResult {
     @Nullable
-    private LoggedInUserView success;
+    private User success;
     @Nullable
-    private Integer error;
+    private String password;
+    @Nullable
+    private String error;
 
-    LoginResult(@Nullable Integer error) {
+    LoginResult(@Nullable String error) {
         this.error = error;
     }
 
-    LoginResult(@Nullable LoggedInUserView success) {
+    LoginResult(@Nullable User success, @Nullable String passwd) {
         this.success = success;
+        this.password=passwd;
     }
 
     @Nullable
-    LoggedInUserView getSuccess() {
+    User getSuccess() {
         return success;
     }
 
     @Nullable
-    Integer getError() {
+    String getPassword() {
+        return password;
+    }
+
+    @Nullable
+    String getError() {
         return error;
     }
 }

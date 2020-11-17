@@ -1,15 +1,12 @@
 package com.example.orlik.ui.register;
 
-import android.content.Intent;
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.orlik.MainActivity;
+import com.example.orlik.Network.NetworkError;
 import com.example.orlik.Network.RetrofitServiceGenerator;
 import com.example.orlik.Network.ServerAPI;
-import com.example.orlik.data.model.Session;
 import com.example.orlik.data.model.User;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,7 +15,7 @@ import retrofit2.Response;
 public class RegisterRepository {
     private final static String TAG="RegisterRepositoryrTAG";
     private ServerAPI serverAPI = RetrofitServiceGenerator.createService(ServerAPI.class);
-    MutableLiveData<RegisterResult> result;
+    private MutableLiveData<RegisterResult> result;
 
     /**
      * Make asynchronous register call and save result to mutableLiveData registerResult object
@@ -32,38 +29,40 @@ public class RegisterRepository {
     {
 
         this.result=result;
-        Call<User> loginCall= serverAPI.registerUser(login,password, name, 1);
-
-        loginCall.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-               if(response.isSuccessful() && response.body().getLogin().equals(login))
-               {
-                   Log.v(TAG,"Zarejestrowano");
-                   registerSuccesfull();
+        try {
 
 
+            Call<User> loginCall = serverAPI.registerUser(login, password, name, surname, 1);
 
-               }else {
-                   Log.v(TAG,"Bląd"+response.code()+response.message());
-                   String message= "code:"+response.code()+" "+response.message();
-                   registerFailure(message);
-               }
+            loginCall.enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    if (response.isSuccessful() && response.body().getLogin().equals(login)) {
+                        registerSuccesfull();
+
+                    } else {
+                        Gson gson = new Gson();
+                        NetworkError errorBody = gson.fromJson(response.errorBody().charStream(), NetworkError.class);
+                        String message = errorBody.getMessage();
+                        registerFailure(message);
+                    }
 
 
-            }
+                }
 
-            @Override
-            public void onFailure(Call<User> call, Throwable t)
-            {
-                Log.v(TAG,"Failure");
-                registerFailure(t.getMessage());
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
 
-            }
+                    registerFailure(t.getMessage());
 
-        });
-        Log.v(TAG,"Zwracam wartosc rejestracj");
+                }
 
+            });
+
+        }catch (Exception e)
+        {
+            registerFailure(e.getMessage());
+        }
     }
 
     public void registerSuccesfull()

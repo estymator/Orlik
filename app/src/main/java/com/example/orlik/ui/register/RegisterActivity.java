@@ -23,6 +23,8 @@ import com.example.orlik.R;
 import com.example.orlik.ui.login.LoginViewModel;
 import com.example.orlik.ui.login.LoginViewModelFactory;
 
+import retrofit2.http.Query;
+
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG="RegisterActivityTag";
     private RegisterViewModel registerViewModel;
@@ -77,20 +79,21 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if(result!=null)
                 {
-                    if(result.getError()!=null)
+                    if(result.getError()==null)
                     {
-                        registerButton.setEnabled(true);
-                        Log.v(TAG,result.getError());
-                        Toast.makeText(getApplicationContext(), R.string.register_failed, Toast.LENGTH_LONG).show();
-                    }else
-                    {
-
-                        Log.v(TAG,"Before finish()");
                         Toast.makeText(getApplicationContext(), R.string.register_success, Toast.LENGTH_LONG).show();
                         //Complete and destroy login activity once successful
                         setResult(Activity.RESULT_OK);
                         finish();
+                    }else if(result.getError().equals(getString(R.string.register_login_failed)))
+                    {
+                        usernameEditText.setError(result.getError());
+                    }else
+                    {
+                        registerButton.setEnabled(true);
+                        Toast.makeText(getApplicationContext(), R.string.register_failed, Toast.LENGTH_LONG).show();
                     }
+
                 }
 
             }

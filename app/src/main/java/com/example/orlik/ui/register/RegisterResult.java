@@ -2,7 +2,7 @@ package com.example.orlik.ui.register;
 
 import androidx.annotation.Nullable;
 
-public class RegisterResult {
+class RegisterResult {
 
     @Nullable
     private String error;

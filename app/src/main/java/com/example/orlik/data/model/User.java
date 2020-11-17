@@ -1,34 +1,24 @@
 package com.example.orlik.data.model;
 
 public class User {
-    private int Id, userRole, totalGames, winGames;
-    private String login, password, email;
+    private int totalGames=0, winGames=0, trustRate=0;
+    private String login="", name="", surname="";
+    private String fetchError="";
 
-    public User(int id, int userRole, int totalGames, int winGames, String login, String password, String email) {
-        Id = id;
-        this.userRole = userRole;
+    public User(int totalGames, int winGames, String login, String name,  String surname, int trustRate) {
+
         this.totalGames = totalGames;
         this.winGames = winGames;
         this.login = login;
-        this.password = password;
-        this.email = email;
+        this.name=name;
+        this.surname = surname;
+        this.trustRate=trustRate;
     }
 
-    public int getId() {
-        return Id;
+    public User(String error){
+        this.fetchError=error;
     }
 
-    public void setId(int id) {
-        Id = id;
-    }
-
-    public int getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(int userRole) {
-        this.userRole = userRole;
-    }
 
     public int getTotalGames() {
         return totalGames;
@@ -54,19 +44,28 @@ public class User {
         this.login = login;
     }
 
-    public String getPassword() {
-        return password;
+
+    public String getSurname() {
+        return surname;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
-    public String getEmail() {
-        return email;
+    public int getTrustRate() {
+        return trustRate;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setTrustRate(int trustRate) {
+        this.trustRate = trustRate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -9,8 +9,9 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="prompt_email">Email</string>
+    <string name="title_activity_login">Logowanie</string>
+    <string name="title_activity_register">Rejestracja</string>
+    <string name="prompt_email">Login</string>
     <string name="prompt_password">Hasło</string>
     <string name="prompt__sec_password">Powtórz hasło</string>
     <string name="prompt_name">Imie</string>
@@ -26,5 +27,19 @@
     <string name="invalid_sec_password">Różne hasła</string>
     <string name="login_failed">"Logowanie nieudane"</string>
     <string name="register_failed">"Rejestracja nieudana"</string>
+    <string name="register_login_failed">"Podany login jest zajęty przez innego użytkownika"</string>
     <string name="register_success">"Zarejestrowano"</string>
+
+    <!--    Strings from main activity-->
+    <string name="logout_button">Wyloguj</string>
+    <string name="menu_item_profile">Profil</string>
+    <string name="menu_item_games">Mecze</string>
+    <string name="menu_item_settings">Ustawienia</string>
+    <string name="menu_item_organize">Dołącz</string>
+<!--    Strings for gamesActivity-->
+    <string name="title_activity_games">Mecze</string>
+<!--    Strings for organizeGames-->
+    <string name="title_activity_organizeGames">Zaplanuj mecz</string>
+<!--    Strings for settingsActivity-->
+    <string name="title_activity_settings">Ustawienia</string>
 </resources>
