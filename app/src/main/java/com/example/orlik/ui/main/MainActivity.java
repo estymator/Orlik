@@ -8,6 +8,7 @@ import com.example.orlik.Network.RetrofitServiceGenerator;
 import com.example.orlik.R;
 import com.example.orlik.data.model.Session;
 import com.example.orlik.data.model.User;
+import com.example.orlik.ui.Basic.BasicActivity;
 import com.example.orlik.ui.games.GamesActivity;
 import com.example.orlik.ui.login.LoginActivity;
 import com.example.orlik.ui.organizeGames.OrganizeActivity;
@@ -28,7 +29,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BasicActivity {
     private Session session;
     private User loggedInUser;
     private static final String TAG="MainActivity";
@@ -41,20 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.v(TAG,"OnCreate");
         super.onCreate(savedInstanceState);
-        //if user is logged in
-        session= new Session(this.getApplicationContext());
-        if(session.getCredentials()==null)
-        {
-            loginRedirectFlag=true;
-            Log.v(TAG, "User niezalogowany");
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-        }else{
-            RetrofitServiceGenerator.setCredentials(session.getCredentials().split(":")[0],session.getCredentials().split(":")[1]);
-        }
+        Log.v(TAG,"OnCreate");
 
         setContentView(R.layout.activity_main);
         mainViewModel = ViewModelProviders.of(this, new MainViewModelFactory())
@@ -62,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         logoutButton = findViewById(R.id.main_logout_button);
         listUsersButton=findViewById(R.id.main_list_users_button);
         bottomNavigationView = findViewById(R.id.main_toolbar);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        bottomNavigationView.setOnNavigationItemReselectedListener(this);
 
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -107,32 +98,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Intent intent;
-                switch (item.getItemId()){
-                    case R.id.menu_item_games:
-                        intent= new Intent(MainActivity.this, GamesActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        return true;
-
-                    case R.id.menu_item_settings:
-                        intent= new Intent(MainActivity.this, SettingsActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        return true;
-
-                    case R.id.menu_item_organize:
-                        intent= new Intent(MainActivity.this, OrganizeActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        return true;
-                }
-                return false;
-            }
-        });
 
     }
 
@@ -169,17 +134,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         Log.v(TAG, "On Start");
         session= new Session(getApplicationContext());
-
-        if(session.getCredentials()==null)
-        {
-            loginRedirectFlag=true;
-            Log.v(TAG, "User niezalogowany");
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-        }else if(session.getCredentials()!=null){
-            RetrofitServiceGenerator.setCredentials(session.getCredentials().split(":")[0],session.getCredentials().split(":")[1]);
-        }
     }
 
     @Override
@@ -188,16 +142,6 @@ public class MainActivity extends AppCompatActivity {
         Log.v(TAG, "onResume");
         session= new Session(getApplicationContext());
 
-        if(session.getCredentials()==null)
-        {
-            loginRedirectFlag=true;
-            Log.v(TAG, "User niezalogowany");
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-        }else if(session.getCredentials()!=null){
-            RetrofitServiceGenerator.setCredentials(session.getCredentials().split(":")[0],session.getCredentials().split(":")[1]);
-        }
     }
 
 

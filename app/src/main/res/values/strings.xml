@@ -36,10 +36,10 @@
     <string name="menu_item_games">Mecze</string>
     <string name="menu_item_settings">Ustawienia</string>
     <string name="menu_item_organize">Dołącz</string>
-<!--    Strings for gamesActivity-->
+    <!--    Strings for gamesActivity-->
     <string name="title_activity_games">Mecze</string>
-<!--    Strings for organizeGames-->
+    <!--    Strings for organizeGames-->
     <string name="title_activity_organizeGames">Zaplanuj mecz</string>
-<!--    Strings for settingsActivity-->
+    <!--    Strings for settingsActivity-->
     <string name="title_activity_settings">Ustawienia</string>
 </resources>
