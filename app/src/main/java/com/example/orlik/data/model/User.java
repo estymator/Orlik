@@ -68,4 +68,25 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getFetchError() {
+        return fetchError;
+    }
+
+    public void setFetchError(String fetchError) {
+        this.fetchError = fetchError;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "totalGames=" + totalGames +
+                ", winGames=" + winGames +
+                ", trustRate=" + trustRate +
+                ", login='" + login + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", fetchError='" + fetchError + '\'' +
+                '}';
+    }
 }

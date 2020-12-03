@@ -2,6 +2,7 @@ package com.example.orlik.Network;
 
 import com.example.orlik.data.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Response;
@@ -33,9 +34,21 @@ public interface ServerAPI {
     @GET("/logout")
     Call<Object> logoutUser();
 
+    @GET("/user/friends/all")
+    Call<ArrayList<User>> getFriends(
+            @Query("userLogin") String login
+    );
+
     @GET("admin/user/all")
     Call<List<User>> getAllUsers();
 
     @GET("/home")
     Call<User> getLoggedInUser();
+
+    @GET("/pitch")
+    Call<User> getPitch(
+            @Query("lon") double lon,
+            @Query("lat") double lat,
+            @Query("range") int range
+    );
 }

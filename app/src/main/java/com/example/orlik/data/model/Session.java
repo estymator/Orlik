@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import static android.content.Context.MODE_PRIVATE;
 
 
@@ -15,6 +17,7 @@ public class Session {
     public static final String UserSessionPreferencies = "com.example.Orlik.userInformation";
     public static final String PasswordKey = "passwordKey";
     public static final String UsernameKey = "usernameKey";
+    public static final String userKey = "userKey";
 
     public Session(Context context)
     {
@@ -30,10 +33,25 @@ public class Session {
     }
     public void setCredentials(String username, String password)
     {
-        Log.v("Zapisuje dane", " Session ");
         editor.putString(UsernameKey,username);
         editor.putString(PasswordKey,password);
         editor.commit();
+    }
+    public void setUser(User u){
+        String userChain=u.toString();
+        editor.putString(userKey,userChain);
+        editor.commit();
+    }
+
+    public User getUser(){
+        String userString=sharedPreferences.getString(userKey,null);
+        if(userString!=null){
+            Gson gson = new Gson();
+            User u = gson.fromJson(userString, User.class);
+            return u;
+        }else{
+            return null;
+        }
     }
 
     public void logout()
@@ -41,6 +59,11 @@ public class Session {
         editor.clear();
         editor.commit();
     }
+
+    /**
+     *
+     * @return String  - username:password
+     */
     public String getCredentials()
     {
         String username=sharedPreferences.getString(UsernameKey,null);

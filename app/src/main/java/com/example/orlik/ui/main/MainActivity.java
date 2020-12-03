@@ -26,8 +26,15 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+
+import okhttp3.Interceptor;
 
 public class MainActivity extends BasicActivity {
     private Session session;
@@ -38,21 +45,35 @@ public class MainActivity extends BasicActivity {
     BottomNavigationView bottomNavigationView;
     Button logoutButton;
     Button listUsersButton;
+    TextView nameTextView, gamesTextView, wonTextView, trustRateTextView, wonRatioTextView, loginTextView;
+    ListView friendsListView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v(TAG,"OnCreate");
-
+        session = new Session(this);
         setContentView(R.layout.activity_main);
         mainViewModel = ViewModelProviders.of(this, new MainViewModelFactory())
                 .get(MainViewModel.class);
+
+        loginTextView = findViewById(R.id.main_login_TextView);
         logoutButton = findViewById(R.id.main_logout_button);
         listUsersButton=findViewById(R.id.main_list_users_button);
+        nameTextView=findViewById(R.id.main_name_TextView);
+        gamesTextView=findViewById(R.id.main_games_TextView);
+        wonTextView=findViewById(R.id.main_won_TextView);
+        trustRateTextView=findViewById(R.id.main_trustRate_TextView);
+        wonRatioTextView=findViewById(R.id.main_wonRatio_TextView);
+
+        friendsListView=(ListView) findViewById(R.id.main_friends_ListView);
+
         bottomNavigationView = findViewById(R.id.main_toolbar);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setOnNavigationItemReselectedListener(this);
+        bottomNavigationView.setSelectedItemId(R.id.menu_item_profile);
+
 
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -88,16 +109,62 @@ public class MainActivity extends BasicActivity {
                     {
                         Log.v(TAG,"Błąd usuniecia danych z sesji");
                     }
-
-
                 }else{
                     Toast.makeText(getApplicationContext(), logoutResult.getResult(), Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
 
+        mainViewModel.getFriends().observe(this, new Observer<ArrayList<User>>() {
+            @Override
+            public void onChanged(ArrayList<User> friends) {
+                Log.v(TAG, "Załadowano liste znajomych");
+                Log.v(TAG, friends.toString());
+                ArrayAdapter<String> friendsListAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                        android.R.layout.simple_list_item_1, mainViewModel.getFriendsLogin());
+                friendsListView.setAdapter(friendsListAdapter);
 
             }
         });
 
+        mainViewModel.getLoggedInUser().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+
+                if(user.getFetchError().isEmpty()){
+
+                    float winRatio;
+                    if(user.getTotalGames()!=0){
+                        winRatio=(float)user.getWinGames()/user.getTotalGames();
+                    }else{
+                        winRatio=0;
+                    }
+                    session.setUser(user);
+
+                    nameTextView.setText(user.getName()+" "+user.getSurname());
+                    loginTextView.setText("Login: "+user.getLogin());
+                    gamesTextView.setText("Liczba rozegranych gier: "+user.getTotalGames());
+                    wonTextView.setText("Liczba wygranych gier: "+user.getWinGames());
+                    wonRatioTextView.setText("Współczynnik wygranych: "+winRatio);
+                    trustRateTextView.setText("Współczynnik zaufania: "+user.getTrustRate());
+
+                    mainViewModel.loadFriends();
+                }else
+                {
+                    mainViewModel.logout();
+                }
+            }
+        });
+
+        friendsListView.setOnItemClickListener(mainViewModel.getFriendsListListener());
+
+        if(session.getUser()!=null)
+        {
+            mainViewModel.getLoggedInUser().setValue(session.getUser());
+        }else{
+            mainViewModel.getUserInfo();
+
+        }
 
     }
 

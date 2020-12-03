@@ -28,6 +28,7 @@ public class SettingsActivity extends BasicActivity {
         bottomNavigationView = findViewById(R.id.main_toolbar);
         bottomNavigationView.setOnNavigationItemSelectedListener(this); //get select handler from parent class
         bottomNavigationView.setOnNavigationItemReselectedListener(this);
+        bottomNavigationView.setSelectedItemId(R.id.menu_item_settings);
 
     }
 

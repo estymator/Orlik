@@ -35,11 +35,30 @@
     <string name="menu_item_profile">Profil</string>
     <string name="menu_item_games">Mecze</string>
     <string name="menu_item_settings">Ustawienia</string>
-    <string name="menu_item_organize">Dołącz</string>
+    <string name="menu_item_organize">Stwórz</string>
+    <string name="main_friends_textView">Znajomi: </string>
+    <string name="main_searchButton_hint">Login lub imie </string>
+    <string name="main_searchFriends_textView">Szukaj użytkownikow: </string>
+
     <!--    Strings for gamesActivity-->
     <string name="title_activity_games">Mecze</string>
+    <string name="games_search">Szukaj</string>
+    <string name="games_search_title">Szukaj Meczy</string>
+    <string name="games_checkbox_current">Użyj aktualnej lokalizacji</string>
+
     <!--    Strings for organizeGames-->
     <string name="title_activity_organizeGames">Zaplanuj mecz</string>
+    <string name="organize_max_prompt">Maksymalna liczba graczy</string>
+    <string name="organize_min_prompt">Minimalna liczba graczy</string>
+    <string name="organize_match_button">Dodaj Mecz</string>
+    <string name="organize_add_pitch">Dodaj Boisko</string>
+    <string name="organize_city_prompt">Miejscowość</string>
+    <string name="organize_pitch_prompt">Wybierz boisko</string>
+    <string name="organize_address_prompt">Ulica, nr domu</string>
+    <string name="organize_visibility_prompt">Ustaw widoczność</string>
+    <string name="organize_date_prompt">Data </string>
+
+
     <!--    Strings for settingsActivity-->
     <string name="title_activity_settings">Ustawienia</string>
 </resources>

@@ -86,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                     User user = loginResult.getSuccess();
                     try{
                         sesja.setCredentials(user.getLogin(),loginResult.getPassword());
+                        sesja.setUser(user);
                     }catch(Exception e)
                     {
                         Log.v(TAG,"Błąd zapisu danych logowania do sesji");

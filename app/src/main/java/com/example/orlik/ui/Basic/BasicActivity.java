@@ -32,7 +32,7 @@ public class BasicActivity extends AppCompatActivity implements BottomNavigation
             Log.v(TAG, "User niezalogowany");
             Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            startActivity(intent); //TODO : po przekierowaniu do loginu main acitivty dalej sie ładuje i wysyla zapytanie o znajomych
         } else if (session.getCredentials() != null) {
             RetrofitServiceGenerator.setCredentials(session.getCredentials().split(":")[0], session.getCredentials().split(":")[1]);
         }
