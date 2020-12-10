@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
@@ -55,8 +56,7 @@ public class MainActivity extends BasicActivity {
         Log.v(TAG,"OnCreate");
         session = new Session(this);
         setContentView(R.layout.activity_main);
-        mainViewModel = ViewModelProviders.of(this, new MainViewModelFactory())
-                .get(MainViewModel.class);
+        mainViewModel =  new ViewModelProvider(this, new MainViewModelFactory()).get(MainViewModel.class);
 
         loginTextView = findViewById(R.id.main_login_TextView);
         logoutButton = findViewById(R.id.main_logout_button);

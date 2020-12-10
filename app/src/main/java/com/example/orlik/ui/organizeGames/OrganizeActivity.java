@@ -2,6 +2,7 @@ package com.example.orlik.ui.organizeGames;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
@@ -34,7 +35,7 @@ public class OrganizeActivity extends BasicActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.v(TAG,"OnCreate");
         super.onCreate(savedInstanceState);
-        organizeViewModel= ViewModelProviders.of(this, new OrganizeViewModelFactory())
+        organizeViewModel= new ViewModelProvider(this, new OrganizeViewModelFactory())
                 .get(OrganizeViewModel.class);
         organizeViewModel.setContext(this);
 

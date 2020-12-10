@@ -3,6 +3,8 @@ package com.example.orlik.ui.games;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
@@ -42,7 +44,7 @@ public class GamesActivity extends BasicActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v(TAG,"OnCreate");
-        gamesViewModel = ViewModelProviders.of(this, new GamesViewModelFactory())
+        gamesViewModel = new ViewModelProvider(this, new GamesViewModelFactory())
                 .get(GamesViewModel.class);
         gamesViewModel.getLocalization(this);
         setContentView(R.layout.activity_games);
