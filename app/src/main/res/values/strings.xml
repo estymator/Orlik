@@ -43,8 +43,10 @@
     <!--    Strings for gamesActivity-->
     <string name="title_activity_games">Mecze</string>
     <string name="games_search">Szukaj</string>
-    <string name="games_search_title">Szukaj Meczy</string>
+    <string name="games_search_title">Wyszukaj mecze w okolicy</string>
     <string name="games_checkbox_current">Użyj aktualnej lokalizacji</string>
+    <string name="games_pitch_TextView">Rodzaj Boiska</string>
+    <string name="games_range_TextView">Maksymalana odległość</string>
 
     <!--    Strings for organizeGames-->
     <string name="title_activity_organizeGames">Zaplanuj mecz</string>

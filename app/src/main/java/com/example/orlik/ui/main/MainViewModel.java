@@ -79,4 +79,8 @@ public class MainViewModel extends ViewModel {
     public AdapterView.OnItemClickListener getFriendsListListener(){
         return friendsListListener;
     }
+    public void clearUser(){
+        Log.v(TAG,"Clear User");
+        loggedInUser.setValue(null);
+    }
 }

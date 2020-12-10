@@ -1,5 +1,7 @@
 package com.example.orlik.Network;
 
+import com.example.orlik.data.model.Game;
+import com.example.orlik.data.model.Pitch;
 import com.example.orlik.data.model.User;
 
 import java.util.ArrayList;
@@ -46,9 +48,17 @@ public interface ServerAPI {
     Call<User> getLoggedInUser();
 
     @GET("/pitch")
-    Call<User> getPitch(
+    Call<ArrayList<Pitch>> getPitch(
             @Query("lon") double lon,
             @Query("lat") double lat,
             @Query("range") int range
+    );
+
+    @GET("/game/range")
+    Call<ArrayList<Game>> getGames(
+            @Query("lat") double lat,
+            @Query("lon") double lon,
+            @Query("range") int range,
+            @Query("pitchType") String pitchType
     );
 }

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.orlik.data.model.Pitch;
 import com.example.orlik.data.model.User;
 
 import java.util.ArrayList;

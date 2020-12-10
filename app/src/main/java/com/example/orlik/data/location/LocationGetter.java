@@ -65,7 +65,6 @@ public class LocationGetter {
         mLocationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
         boolean isGPSEnabled = mLocationManager
                 .isProviderEnabled(LocationManager.GPS_PROVIDER);
-        Log.v("idGPSEnabled ", isGPSEnabled+" ");
         if (!isGPSEnabled) {
         } else if (isGPSEnabled) {
             try {
@@ -87,7 +86,6 @@ public class LocationGetter {
         try {
             boolean isGPSEnabled = locationManager
                     .isProviderEnabled(LocationManager.GPS_PROVIDER);
-            Log.v("idGPSEnabled ", isGPSEnabled+" ");
             if (!isGPSEnabled) {
             } else if (isGPSEnabled) {
                 try {

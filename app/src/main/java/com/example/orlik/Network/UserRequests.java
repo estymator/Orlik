@@ -64,7 +64,8 @@ public class UserRequests {
 
      public void loggedInUserSuccesfull(User user)
      {
-        this.loggedInUser.setValue(user);
+
+         this.loggedInUser.setValue(user);
      }
      public void loggedInUserFailure(String message){
         this.loggedInUser.setValue(new User(message));

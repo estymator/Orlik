@@ -27,7 +27,7 @@ public class OrganizeActivity extends BasicActivity {
     BottomNavigationView bottomNavigationView;
     final private String TAG="OrganizeActivity";
     private OrganizeViewModel organizeViewModel;
-    private Spinner maxPlayersSpinner, minPlayersSpinner, visibilitySpinner;
+    private Spinner maxPlayersSpinner, minPlayersSpinner, visibilitySpinner, pitchSpinner;
     private Button localizationButton;
     private LocationGetter locationGetter;
     @Override
@@ -52,6 +52,10 @@ public class OrganizeActivity extends BasicActivity {
 
         visibilitySpinner=(Spinner) findViewById(R.id.organize_visibility_spinner);
         organizeViewModel.setOrganizeSpinner(visibilitySpinner,R.array.visibility_array);
+
+
+        pitchSpinner=(Spinner) findViewById(R.id.organize_pitch_spinner);
+        organizeViewModel.setOrganizeSpinner(pitchSpinner,R.array.pitch_array);
 
         localizationButton=(Button) findViewById(R.id.organize_localization_button);
 

@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.example.orlik.R;
 import com.example.orlik.data.model.Session;
 import com.example.orlik.data.model.User;
+import com.example.orlik.ui.games.GamesActivity;
 import com.example.orlik.ui.login.LoginViewModel;
 import com.example.orlik.ui.login.LoginViewModelFactory;
 import com.example.orlik.ui.register.RegisterActivity;
@@ -163,6 +164,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showLoginFailed(String errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed(){
+
+        moveTaskToBack(true);
     }
 
 

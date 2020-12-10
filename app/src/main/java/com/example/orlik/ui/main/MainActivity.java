@@ -79,6 +79,7 @@ public class MainActivity extends BasicActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                logoutButton.setEnabled(false);
 
                 mainViewModel.logout();
             }
@@ -94,17 +95,17 @@ public class MainActivity extends BasicActivity {
         mainViewModel.getLogoutResult().observe(this, new Observer<LogoutResult>() {
             @Override
             public void onChanged(@Nullable LogoutResult logoutResult) {
-                Log.v(TAG,"logoutResult changed");
                 if (logoutResult == null) {
                     return;
                 }
                 if (logoutResult.getResult() == "Wylogowano") {
 
-                    Session sesja = new Session(getApplicationContext());
+                    mainViewModel.clearUser();
                     try{
-                        sesja.logout();
-                        finish();
-                        startActivity(getIntent());
+                        session.logout();
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+
                     }catch (Exception e)
                     {
                         Log.v(TAG,"Błąd usuniecia danych z sesji");
@@ -118,7 +119,6 @@ public class MainActivity extends BasicActivity {
         mainViewModel.getFriends().observe(this, new Observer<ArrayList<User>>() {
             @Override
             public void onChanged(ArrayList<User> friends) {
-                Log.v(TAG, "Załadowano liste znajomych");
                 Log.v(TAG, friends.toString());
                 ArrayAdapter<String> friendsListAdapter = new ArrayAdapter<String>(getApplicationContext(),
                         android.R.layout.simple_list_item_1, mainViewModel.getFriendsLogin());
@@ -130,25 +130,12 @@ public class MainActivity extends BasicActivity {
         mainViewModel.getLoggedInUser().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
+                if(user==null){
 
-                if(user.getFetchError().isEmpty()){
-
-                    float winRatio;
-                    if(user.getTotalGames()!=0){
-                        winRatio=(float)user.getWinGames()/user.getTotalGames();
-                    }else{
-                        winRatio=0;
-                    }
+                   //after logout
+                }else if(user.getFetchError().isEmpty()){
                     session.setUser(user);
-
-                    nameTextView.setText(user.getName()+" "+user.getSurname());
-                    loginTextView.setText("Login: "+user.getLogin());
-                    gamesTextView.setText("Liczba rozegranych gier: "+user.getTotalGames());
-                    wonTextView.setText("Liczba wygranych gier: "+user.getWinGames());
-                    wonRatioTextView.setText("Współczynnik wygranych: "+winRatio);
-                    trustRateTextView.setText("Współczynnik zaufania: "+user.getTrustRate());
-
-                    mainViewModel.loadFriends();
+                    loadViewValues(user);
                 }else
                 {
                     mainViewModel.logout();
@@ -158,12 +145,15 @@ public class MainActivity extends BasicActivity {
 
         friendsListView.setOnItemClickListener(mainViewModel.getFriendsListListener());
 
-        if(session.getUser()!=null)
-        {
-            mainViewModel.getLoggedInUser().setValue(session.getUser());
-        }else{
-            mainViewModel.getUserInfo();
 
+        if(session.getCredentials()!=null) {
+            if (session.getUser() != null) {
+
+                mainViewModel.getLoggedInUser().setValue(session.getUser());
+            } else {
+                mainViewModel.getUserInfo();
+
+            }
         }
 
     }
@@ -207,10 +197,41 @@ public class MainActivity extends BasicActivity {
     protected void onResume(){
         super.onResume();
         Log.v(TAG, "onResume");
-        session= new Session(getApplicationContext());
+        session= new Session(getApplicationContext()); //TODO: check if session can notice all changes done after session initalization
+        if(mainViewModel.getLoggedInUser().getValue()==null){
+
+            if(session.getCredentials()!=null) {
+
+                if (session.getUser() != null) {
+                    mainViewModel.getLoggedInUser().setValue(session.getUser());
+
+                } else {
+                    mainViewModel.getUserInfo();
+                }
+            }
+        }
 
     }
 
+    /**
+     * function load to view objects user info
+     */
+    private void loadViewValues(User user){
+        float winRatio;
+        if(user.getTotalGames()!=0){
+            winRatio=(float)user.getWinGames()/user.getTotalGames();
+        }else{
+            winRatio=0;
+        }
 
+        nameTextView.setText(user.getName()+" "+user.getSurname());
+        loginTextView.setText("Login: "+user.getLogin());
+        gamesTextView.setText("Liczba rozegranych gier: "+user.getTotalGames());
+        wonTextView.setText("Liczba wygranych gier: "+user.getWinGames());
+        wonRatioTextView.setText("Współczynnik wygranych: "+winRatio);
+        trustRateTextView.setText("Współczynnik zaufania: "+user.getTrustRate());
+
+        mainViewModel.loadFriends();
+    }
 
 }

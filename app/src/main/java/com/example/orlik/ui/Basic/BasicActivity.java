@@ -17,7 +17,6 @@ import com.example.orlik.ui.main.MainActivity;
 import com.example.orlik.ui.organizeGames.OrganizeActivity;
 import com.example.orlik.ui.settings.SettingsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
 public class BasicActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemReselectedListener{
     private final String TAG="BasicActivity";
@@ -32,12 +31,21 @@ public class BasicActivity extends AppCompatActivity implements BottomNavigation
             Log.v(TAG, "User niezalogowany");
             Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent); //TODO : po przekierowaniu do loginu main acitivty dalej sie ładuje i wysyla zapytanie o znajomych
+            startActivityForResult(intent,-1); //TODO : po przekierowaniu do loginu main acitivty dalej sie ładuje i wysyla zapytanie o znajomych
         } else if (session.getCredentials() != null) {
             RetrofitServiceGenerator.setCredentials(session.getCredentials().split(":")[0], session.getCredentials().split(":")[1]);
         }
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int responseCode, Intent data)
+    {
+        super.onActivityResult(requestCode, responseCode, data);
+        Log.v(TAG, "OnActivityResult()");
+
+
+    }
 
     @Override
     protected void onResume(){
@@ -66,7 +74,7 @@ public class BasicActivity extends AppCompatActivity implements BottomNavigation
             Log.v(TAG, "User niezalogowany");
             Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            startActivityForResult(intent, 1);
         }else if(session.getCredentials()!=null){
             RetrofitServiceGenerator.setCredentials(session.getCredentials().split(":")[0],session.getCredentials().split(":")[1]);
         }
@@ -112,6 +120,7 @@ public class BasicActivity extends AppCompatActivity implements BottomNavigation
         }
         return false;
     }
+
 
 
     @Override
