@@ -60,9 +60,24 @@
     <string name="organize_visibility_prompt">Ustaw widoczność</string>
     <string name="organize_date_prompt">Data </string>
 
-
     <!--    Strings for settingsActivity-->
     <string name="title_activity_settings">Ustawienia</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+<!--    String for GameResultsFragment-->
+    <string name="games_result_moreButton">Więcej</string>
+    <string name="games_result_organizer_hint">Organizator</string>
+    <string name="games_result_members_hint">Zapisani</string>
+    <string name="games_result_date_hint">Data</string>
+    <string name="games_result_address_hint">adres</string>
+    <string name="games_result_visibility_hint">Prywatne/publiczne</string>
+    <string name="games_result_membersRange_hint">ZakresUczestnikow</string>
+    <string name="games_result_pitchType_hint">Typ Boiska</string>
+    <string name="games_result_pitchRate_hint">Ocena Boiska</string>
+    <string name="games_result_membersLogin_hint">Uczestnicy</string>
+    <string name="games_result_mapButton_hint">Zobacz na mapie</string>
+    <string name="games_result_status_hint">Status Boiska</string>
+    <string name="games_result_signUpButton_hint">Dołącz</string>
 </resources>

@@ -5,8 +5,8 @@ import java.time.LocalDate;
 public class Game {
     private Integer gameId;
     private Integer maxPlayersNumber,minPlayersNumber, pitchId, visibility, players;
-    private String organiserLogin;
-    private LocalDate gameDay;
+    private String organizerLogin;
+    private String schedule;
     private String status;
 
     public Integer getGameId(){
@@ -46,19 +46,19 @@ public class Game {
     }
 
     public String getOrganizerLogin() {
-        return organiserLogin;
+        return organizerLogin;
     }
 
-    public void setOrganiserLogin( String organiserLogin) {
-        this.organiserLogin = organiserLogin;
+    public void setOrganizerLogin( String organiserLogin) {
+        this.organizerLogin = organiserLogin;
     }
 
-    public LocalDate getGameDay() {
-        return gameDay;
+    public String getSchedule() {
+        return schedule;
     }
 
-    public void setGameDay(LocalDate date) {
-        this.gameDay = date;
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
     }
 
     public String getStatus() {
@@ -80,14 +80,14 @@ public class Game {
     public Game(){};
 
 
-    public Game(Integer id, Integer maxPlayersNumber, Integer minPlayersNumber, Integer pitchId, Integer visibility, String organiserLogin, LocalDate date) {
+    public Game(Integer id, Integer maxPlayersNumber, Integer minPlayersNumber, Integer pitchId, Integer visibility, String organiserLogin, String s) {
         this.gameId=id;
         this.maxPlayersNumber = maxPlayersNumber;
         this.minPlayersNumber = minPlayersNumber;
         this.pitchId = pitchId;
         this.visibility = visibility;
-        this.organiserLogin = organiserLogin;
-        this.gameDay = date;
+        this.organizerLogin = organiserLogin;
+        this.schedule = s;
     }
 
     @Override
@@ -99,8 +99,8 @@ public class Game {
                 ", pitchId=" + pitchId +
                 ", visibility=" + visibility +
                 ", players=" + players +
-                ", organiserLogin='" + organiserLogin + '\'' +
-                ", gameDay=" + gameDay +
+                ", organizerLogin='" + organizerLogin + '\'' +
+                ", schedule=" + schedule +
                 ", status='" + status + '\'' +
                 '}';
     }
