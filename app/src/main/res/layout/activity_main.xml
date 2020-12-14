@@ -15,6 +15,8 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginBottom="@dimen/nav_bar_height">
+
+
     <RelativeLayout
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -92,12 +94,25 @@
         android:layout_marginTop="@dimen/basic_margin"
         android:layout_below="@id/main_trustRate_TextView"
         />
-    <ListView
-        android:id="@+id/main_friends_ListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/main_friends_TextView"/>
+        <LinearLayout
+            android:id="@+id/main_friends_linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@id/main_friends_TextView">
+            <ScrollView
+                android:id="@+id/main_friends_scrollView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                >
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/main_friends_recyclerView"
+                    android:layout_marginTop="24dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </ScrollView>
+        </LinearLayout>
     <TextView
         android:id="@+id/main_searchFriends_TextView"
         android:layout_width="match_parent"
@@ -106,7 +121,7 @@
         android:textColor="@color/textColorPrimary"
         android:text="@string/main_searchFriends_textView"
         android:layout_marginTop="@dimen/basic_margin"
-        android:layout_below="@id/main_friends_ListView"
+        android:layout_below="@id/main_friends_linearLayout"
         />
 
     <Button
@@ -126,11 +141,6 @@
         android:layout_below="@id/main_searchFriends_TextView"
         android:hint="@string/main_searchButton_hint"/>
 
-    <ListView
-        android:id="@+id/main_search_ListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/main_searchFriends_button"/>
 
     <Button
         android:id="@+id/main_logout_button"
@@ -138,7 +148,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/logout_button"
-        android:layout_below="@id/main_search_ListView"/>
+        android:layout_below="@id/main_searchFriends_EditText"/>
     <Button
         android:id="@+id/main_list_users_button"
         android:layout_width="wrap_content"

@@ -10,6 +10,7 @@ import com.example.orlik.data.model.Session;
 import com.example.orlik.data.model.User;
 import com.example.orlik.ui.Basic.BasicActivity;
 import com.example.orlik.ui.games.GamesActivity;
+import com.example.orlik.ui.games.GamesResultAdapter;
 import com.example.orlik.ui.login.LoginActivity;
 import com.example.orlik.ui.organizeGames.OrganizeActivity;
 import com.example.orlik.ui.settings.SettingsActivity;
@@ -21,6 +22,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.View;
@@ -47,7 +50,7 @@ public class MainActivity extends BasicActivity {
     Button logoutButton;
     Button listUsersButton;
     TextView nameTextView, gamesTextView, wonTextView, trustRateTextView, wonRatioTextView, loginTextView;
-    ListView friendsListView;
+    RecyclerView friendsRecyclerView;
 
 
     @Override
@@ -67,7 +70,7 @@ public class MainActivity extends BasicActivity {
         trustRateTextView=findViewById(R.id.main_trustRate_TextView);
         wonRatioTextView=findViewById(R.id.main_wonRatio_TextView);
 
-        friendsListView=(ListView) findViewById(R.id.main_friends_ListView);
+        friendsRecyclerView=(RecyclerView) findViewById(R.id.main_friends_recyclerView);
 
         bottomNavigationView = findViewById(R.id.main_toolbar);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
@@ -120,10 +123,11 @@ public class MainActivity extends BasicActivity {
             @Override
             public void onChanged(ArrayList<User> friends) {
                 Log.v(TAG, friends.toString());
-                ArrayAdapter<String> friendsListAdapter = new ArrayAdapter<String>(getApplicationContext(),
-                        android.R.layout.simple_list_item_1, mainViewModel.getFriendsLogin());
-                friendsListView.setAdapter(friendsListAdapter);
-
+                friendsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                if(friends.size()>0){
+                    Log.v(TAG,"Znajomi obecni");
+                    friendsRecyclerView.setAdapter(new FriendsAdapter(friends));
+                }
             }
         });
 
@@ -143,7 +147,6 @@ public class MainActivity extends BasicActivity {
             }
         });
 
-        friendsListView.setOnItemClickListener(mainViewModel.getFriendsListListener());
 
 
         if(session.getCredentials()!=null) {

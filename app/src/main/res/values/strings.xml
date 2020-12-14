@@ -39,6 +39,9 @@
     <string name="main_friends_textView">Znajomi: </string>
     <string name="main_searchButton_hint">Login lub imie </string>
     <string name="main_searchFriends_textView">Szukaj użytkownikow: </string>
+    <string name="main_friendsItem_textView">Imie i nazwisko </string>
+    <string name="main_friendsItem_button">Zobacz Profil </string>
+
 
     <!--    Strings for gamesActivity-->
     <string name="title_activity_games">Mecze</string>
@@ -66,7 +69,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-<!--    String for GameResultsFragment-->
+    <!--    String for GameResultsFragment-->
     <string name="games_result_moreButton">Więcej</string>
     <string name="games_result_organizer_hint">Organizator</string>
     <string name="games_result_members_hint">Zapisani</string>
