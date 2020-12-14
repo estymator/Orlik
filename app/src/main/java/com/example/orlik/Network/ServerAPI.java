@@ -1,5 +1,6 @@
 package com.example.orlik.Network;
 
+import com.example.orlik.data.model.Friends;
 import com.example.orlik.data.model.Game;
 import com.example.orlik.data.model.Pitch;
 import com.example.orlik.data.model.User;
@@ -10,6 +11,7 @@ import java.util.List;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -36,10 +38,6 @@ public interface ServerAPI {
     @GET("/logout")
     Call<Object> logoutUser();
 
-    @GET("/user/friends/all")
-    Call<ArrayList<User>> getFriends(
-            @Query("userLogin") String login
-    );
 
     @GET("admin/user/all")
     Call<List<User>> getAllUsers();
@@ -61,4 +59,23 @@ public interface ServerAPI {
             @Query("range") int range,
             @Query("pitchType") String pitchType
     );
+
+    @GET("/user/friends/all")
+    Call<ArrayList<User>> getFriends(
+            @Query("userLogin") String login
+    );
+
+    @POST("/user/friends")
+    Call<Friends> addFriends(
+            @Query("firstLogin") String firstLogin,
+            @Query("secondLogin") String secondLogin
+    );
+
+    @DELETE("/user/friends")
+    Call<Boolean> deleteFriends(
+            @Query("firstLogin") String firstLogin,
+            @Query("secondLogin") String secondLogin
+    );
+
+//    TODO delete friends | make friends | getgamesWithUser | getGamesOrganizesByUser |
 }

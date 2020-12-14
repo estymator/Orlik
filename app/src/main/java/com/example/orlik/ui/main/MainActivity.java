@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.orlik.Network.FriendsRequests;
 import com.example.orlik.Network.RetrofitServiceGenerator;
 import com.example.orlik.R;
 import com.example.orlik.data.model.Session;
@@ -51,7 +52,7 @@ public class MainActivity extends BasicActivity {
     Button listUsersButton;
     TextView nameTextView, gamesTextView, wonTextView, trustRateTextView, wonRatioTextView, loginTextView;
     RecyclerView friendsRecyclerView;
-
+    //TODO do not return currently logged in user as a search result
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +126,6 @@ public class MainActivity extends BasicActivity {
                 Log.v(TAG, friends.toString());
                 friendsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 if(friends.size()>0){
-                    Log.v(TAG,"Znajomi obecni");
                     friendsRecyclerView.setAdapter(new FriendsAdapter(friends));
                 }
             }

@@ -1,5 +1,6 @@
 package com.example.orlik.ui.main;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.orlik.R;
 import com.example.orlik.data.model.User;
+import com.example.orlik.ui.profile.ProfileActivity;
 
 import java.util.ArrayList;
 
@@ -27,12 +29,6 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
             this.nameTextView= view.findViewById(R.id.main_friendsItem_textView);
             this.ProfileButton=view.findViewById(R.id.main_friendsItem_button);
 
-            this.ProfileButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.v(TAG, "Pokaz Profil");
-                }
-            });
         }
 
         public TextView getNameTextView() {
@@ -61,6 +57,16 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position){
         viewHolder.getNameTextView().setText(friends.get(position).getName()+" "+friends.get(position).getSurname());
+
+        viewHolder.getProfileButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                intent.putExtra("user", friends.get(position));
+                intent.putExtra("friend",true);
+                view.getContext().startActivity(intent);
+            }
+        });
 
     }
 

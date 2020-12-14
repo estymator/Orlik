@@ -27,7 +27,7 @@
     <TextView
         android:id="@+id/main_name_TextView"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         android:textColor="@color/textColorPrimary"
         android:padding="5dp"
@@ -36,7 +36,7 @@
     <TextView
         android:id="@+id/main_login_TextView"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         android:textColor="@color/textColorPrimary"
         android:padding="5dp"
@@ -46,7 +46,7 @@
     <TextView
         android:id="@+id/main_games_TextView"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         android:textColor="@color/textColorPrimary"
         android:padding="5dp"
@@ -56,8 +56,8 @@
     <TextView
         android:id="@+id/main_won_TextView"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorPrimaryDark"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:textColor="@color/textColorPrimary"
         android:padding="5dp"
         android:layout_margin="@dimen/basic_margin"
@@ -66,7 +66,7 @@
     <TextView
         android:id="@+id/main_wonRatio_TextView"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         android:textColor="@color/textColorPrimary"
         android:padding="5dp"
@@ -76,7 +76,7 @@
     <TextView
         android:id="@+id/main_trustRate_TextView"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         android:textColor="@color/textColorPrimary"
         android:padding="5dp"
@@ -87,7 +87,7 @@
     <TextView
         android:id="@+id/main_friends_TextView"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@color/barBackground"
         android:textColor="@color/textColorPrimary"
         android:text="@string/main_friends_textView"

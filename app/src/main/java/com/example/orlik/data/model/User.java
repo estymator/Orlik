@@ -1,6 +1,8 @@
 package com.example.orlik.data.model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private int totalGames=0, winGames=0, trustRate=0;
     private String login="", name="", surname="";
     private String fetchError="";
@@ -89,4 +91,6 @@ public class User {
                 ", fetchError='" + fetchError + '\'' +
                 '}';
     }
+
+
 }
