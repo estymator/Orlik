@@ -1,4 +1,4 @@
-package com.example.orlik.ui.organizeGames;
+package com.example.orlik.ui.organizeGames.fragments;
 
 import android.os.Bundle;
 
@@ -14,6 +14,8 @@ import android.widget.Button;
 
 import com.example.orlik.R;
 import com.example.orlik.ui.games.GamesResultFragment;
+import com.example.orlik.ui.organizeGames.OrganizeViewModel;
+import com.example.orlik.ui.organizeGames.OrganizeViewModelFactory;
 
 /**
  * A simple {@link Fragment} subclass.

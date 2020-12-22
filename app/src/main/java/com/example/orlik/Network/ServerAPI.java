@@ -35,19 +35,39 @@ public interface ServerAPI {
             @Query("userRole") int userRole
     );
 
+
     @GET("/logout")
     Call<Object> logoutUser();
 
+    /**
+     * function returns currenytly logged in user
+     * @return
+     */
     @GET("/home")
     Call<User> getLoggedInUser();
 
+    /**
+     * Return all pitchs in given range from given localization
+     * @param lon longitude
+     * @param lat latitude
+     * @param range range of searching
+     * @return
+     */
     @GET("/pitch")
     Call<ArrayList<Pitch>> getPitch(
-            @Query("lon") double lon,
-            @Query("lat") double lat,
+            @Query("lon") double lat,
+            @Query("lat") double lon,
             @Query("range") int range
     );
 
+    /**
+     * return all games played on pitchType pitches in given range from given destination
+     * @param lat latitude
+     * @param lon longitude
+     * @param range range
+     * @param pitchType type- Dowolny, Orlik, Hala, Trawiaste, Płyta Gumowa
+     * @return
+     */
     @GET("/game/range")
     Call<ArrayList<Game>> getGames(
             @Query("lat") double lat,
@@ -56,35 +76,72 @@ public interface ServerAPI {
             @Query("pitchType") String pitchType
     );
 
+    /**
+     * return list of games organized by user with given login
+     * @param organiserLogin
+     * @return
+     */
     @GET("/game/login")
     Call<ArrayList<Game>> getGamesByOrganiserLogin(
             @Query("organiserLogin") String organiserLogin
     );
 
+    /**
+     * return list of games in which play user with given login
+     * @param playerLogin
+     * @return
+     */
     @GET("/game/login")
     Call<ArrayList<Game>> getGamesByPlayerLogin(
             @Query("playerLogin") String playerLogin
     );
 
+
+    /**
+     * ONLY FOR ADMIN return list of all users
+     * @return
+     */
     @GET("admin/user/all")
     Call<List<User>> getAllUsers();
 
+    /**
+     * Return list of given user friends
+     * @param login
+     * @return
+     */
     @GET("/user/friends/all")
     Call<ArrayList<User>> getFriends(
             @Query("userLogin") String login
     );
 
+    /**
+     * return list of users which name or surname match to given query
+     * @param query
+     * @return
+     */
     @GET("/user/find")
     Call<ArrayList<User>> findUsers(
         @Query("query") String query
     );
 
+    /**
+     * Add friends connection beetwen two users
+     * @param firstLogin
+     * @param secondLogin
+     * @return
+     */
     @POST("/user/friends")
     Call<Friends> addFriends(
             @Query("firstLogin") String firstLogin,
             @Query("secondLogin") String secondLogin
     );
 
+    /**
+     * Delete friends beetwen two users
+     * @param firstLogin
+     * @param secondLogin
+     * @return false/true
+     */
     @DELETE("/user/friends")
     Call<Boolean> deleteFriends(
             @Query("firstLogin") String firstLogin,
