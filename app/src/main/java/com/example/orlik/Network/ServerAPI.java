@@ -38,10 +38,6 @@ public interface ServerAPI {
     @GET("/logout")
     Call<Object> logoutUser();
 
-
-    @GET("admin/user/all")
-    Call<List<User>> getAllUsers();
-
     @GET("/home")
     Call<User> getLoggedInUser();
 
@@ -60,9 +56,27 @@ public interface ServerAPI {
             @Query("pitchType") String pitchType
     );
 
+    @GET("/game/login")
+    Call<ArrayList<Game>> getGamesByOrganiserLogin(
+            @Query("organiserLogin") String organiserLogin
+    );
+
+    @GET("/game/login")
+    Call<ArrayList<Game>> getGamesByPlayerLogin(
+            @Query("playerLogin") String playerLogin
+    );
+
+    @GET("admin/user/all")
+    Call<List<User>> getAllUsers();
+
     @GET("/user/friends/all")
     Call<ArrayList<User>> getFriends(
             @Query("userLogin") String login
+    );
+
+    @GET("/user/find")
+    Call<ArrayList<User>> findUsers(
+        @Query("query") String query
     );
 
     @POST("/user/friends")

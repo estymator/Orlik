@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#112211</color>
+    <color name="colorPrimary">#1c3830</color>
     <color name="colorPrimaryDark">#555555</color>
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="colorAccent">#FFFFFF</color>
     <color name="dark">#111111</color>
     <color name="barItem">#FFFFFF</color>
     <color name="barBackground">#424242</color>
+
+    <color name="dialogBackground">#FFFFFF</color>
+    <color name="dialogHeaderBackground">#1c3830</color>
+    <color name="dialogTextColor">#45494d</color>
+    <color name="dialogHighlight">#53aabd</color>
 </resources>

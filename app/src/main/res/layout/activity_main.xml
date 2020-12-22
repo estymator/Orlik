@@ -94,25 +94,31 @@
         android:layout_marginTop="@dimen/basic_margin"
         android:layout_below="@id/main_trustRate_TextView"
         />
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/main_friends_linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_below="@id/main_friends_TextView">
-            <ScrollView
+            android:layout_height="@dimen/scroll_view_height"
+            android:layout_below="@id/main_friends_TextView"
+            >
+            <androidx.core.widget.NestedScrollView
                 android:id="@+id/main_friends_scrollView"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/main_friends_recyclerView"
-                    android:layout_marginTop="24dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/main_friends_recyclerView"
+                        android:layout_marginTop="24dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-            </ScrollView>
-        </LinearLayout>
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+        </RelativeLayout>
     <TextView
         android:id="@+id/main_searchFriends_TextView"
         android:layout_width="match_parent"
@@ -141,14 +147,36 @@
         android:layout_below="@id/main_searchFriends_TextView"
         android:hint="@string/main_searchButton_hint"/>
 
+    <LinearLayout
+        android:id="@+id/main_searchUsers_linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/main_searchFriends_EditText">
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/main_searchUsers_scrollView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/main_searchUsers_recyclerView"
+                android:layout_marginTop="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
     <Button
         android:id="@+id/main_logout_button"
         android:layout_margin="@dimen/basic_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/logout_button"
-        android:layout_below="@id/main_searchFriends_EditText"/>
+        android:layout_below="@id/main_searchUsers_linearLayout"/>
     <Button
         android:id="@+id/main_list_users_button"
         android:layout_width="wrap_content"

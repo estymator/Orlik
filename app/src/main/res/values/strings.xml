@@ -56,12 +56,13 @@
     <string name="organize_max_prompt">Maksymalna liczba graczy</string>
     <string name="organize_min_prompt">Minimalna liczba graczy</string>
     <string name="organize_match_button">Dodaj Mecz</string>
-    <string name="organize_add_pitch">Dodaj Boisko</string>
+    <string name="organize_pitch_button">Dodaj Boisko</string>
     <string name="organize_city_prompt">Miejscowość</string>
     <string name="organize_pitch_prompt">Wybierz boisko</string>
     <string name="organize_address_prompt">Ulica, nr domu</string>
     <string name="organize_visibility_prompt">Ustaw widoczność</string>
-    <string name="organize_date_prompt">Data </string>
+    <string name="organize_date_prompt">Data i godzina </string>
+    <string name="join_to_organized_match">Zagraj</string>
 
     <!--    Strings for settingsActivity-->
     <string name="title_activity_settings">Ustawienia</string>
@@ -70,7 +71,7 @@
     <string name="profile_deleteFriend_button">Usuń ze znajomych</string>
     <string name="profile_addFriend_button">Dodaj znajomego</string>
     <string name="profile_gameOrganized_textView">Organizowane mecze</string>
-    <string name="profile_gameAttend_textView"> Nadchodzące mecze</string>
+    <string name="profile_gameAttend_textView"> Nadchodzące mecze uzytkownika</string>
     <string name="profile_friends_textView"> Znajomi</string>
 
     <!-- TODO: Remove or change this placeholder text -->

@@ -1,7 +1,6 @@
-package com.example.orlik.ui.main;
+package com.example.orlik.data.adapters;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,9 @@ import com.example.orlik.ui.profile.ProfileActivity;
 import java.util.ArrayList;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder>  {
-    private ArrayList<User> friends;
+    private ArrayList<User> users;
+    private boolean isFriend;
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private final static String TAG = "FriendsViewHolderTAG";
@@ -42,8 +43,10 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     }
 
-    public FriendsAdapter(ArrayList<User> dataset){
-        this.friends=dataset;
+    public FriendsAdapter(ArrayList<User> dataset, boolean isFriend){
+
+        this.users=dataset;
+        this.isFriend=isFriend;
     }
 
     @Override
@@ -56,14 +59,14 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position){
-        viewHolder.getNameTextView().setText(friends.get(position).getName()+" "+friends.get(position).getSurname());
+        viewHolder.getNameTextView().setText(users.get(position).getName()+" "+users.get(position).getSurname());
 
         viewHolder.getProfileButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ProfileActivity.class);
-                intent.putExtra("user", friends.get(position));
-                intent.putExtra("friend",true);
+                intent.putExtra("user", users.get(position));
+                intent.putExtra("friend",isFriend);
                 view.getContext().startActivity(intent);
             }
         });
@@ -72,6 +75,6 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     @Override
     public int getItemCount(){
-        return friends.size();
+        return users.size();
     }
 }

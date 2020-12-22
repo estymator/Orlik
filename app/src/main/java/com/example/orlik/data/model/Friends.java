@@ -26,4 +26,12 @@ public class Friends {
     public void setSecondLogin(String secondLogin) {
         this.secondLogin = secondLogin;
     }
+
+    @Override
+    public String toString() {
+        return "Friends{" +
+                "firstLogin='" + firstLogin + '\'' +
+                ", secondLogin='" + secondLogin + '\'' +
+                '}';
+    }
 }

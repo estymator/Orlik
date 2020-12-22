@@ -1,45 +1,31 @@
 package com.example.orlik.ui.main;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.orlik.Network.FriendsRequests;
-import com.example.orlik.Network.RetrofitServiceGenerator;
 import com.example.orlik.R;
 import com.example.orlik.data.model.Session;
 import com.example.orlik.data.model.User;
 import com.example.orlik.ui.Basic.BasicActivity;
-import com.example.orlik.ui.games.GamesActivity;
-import com.example.orlik.ui.games.GamesResultAdapter;
 import com.example.orlik.ui.login.LoginActivity;
-import com.example.orlik.ui.organizeGames.OrganizeActivity;
-import com.example.orlik.ui.settings.SettingsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.View;
 
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-
-import okhttp3.Interceptor;
 
 public class MainActivity extends BasicActivity {
     private Session session;
@@ -48,10 +34,12 @@ public class MainActivity extends BasicActivity {
     private MainViewModel mainViewModel;
     private boolean loginRedirectFlag=false; //check if already redirect to login
     BottomNavigationView bottomNavigationView;
-    Button logoutButton;
+    Button logoutButton, searchUsersButton;
     Button listUsersButton;
     TextView nameTextView, gamesTextView, wonTextView, trustRateTextView, wonRatioTextView, loginTextView;
-    RecyclerView friendsRecyclerView;
+    RecyclerView friendsRecyclerView, searchUserRecyclerView;
+    EditText searchUsersEditText;
+    ScrollView friendsScrollView;
     //TODO do not return currently logged in user as a search result
 
     @Override
@@ -63,7 +51,6 @@ public class MainActivity extends BasicActivity {
         mainViewModel =  new ViewModelProvider(this, new MainViewModelFactory()).get(MainViewModel.class);
 
         loginTextView = findViewById(R.id.main_login_TextView);
-        logoutButton = findViewById(R.id.main_logout_button);
         listUsersButton=findViewById(R.id.main_list_users_button);
         nameTextView=findViewById(R.id.main_name_TextView);
         gamesTextView=findViewById(R.id.main_games_TextView);
@@ -71,7 +58,19 @@ public class MainActivity extends BasicActivity {
         trustRateTextView=findViewById(R.id.main_trustRate_TextView);
         wonRatioTextView=findViewById(R.id.main_wonRatio_TextView);
 
+        logoutButton = (Button) findViewById(R.id.main_logout_button);
+        searchUsersButton = (Button) findViewById(R.id.main_searchFriends_button);
+
+        searchUsersEditText = (EditText) findViewById(R.id.main_searchFriends_EditText);
+
         friendsRecyclerView=(RecyclerView) findViewById(R.id.main_friends_recyclerView);
+        friendsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        friendsRecyclerView.setAdapter(mainViewModel.getFriendsAdapter());
+
+
+        searchUserRecyclerView=(RecyclerView) findViewById(R.id.main_searchUsers_recyclerView);
+        searchUserRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        searchUserRecyclerView.setAdapter(mainViewModel.getSearchUsersAdapter());
 
         bottomNavigationView = findViewById(R.id.main_toolbar);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
@@ -88,6 +87,18 @@ public class MainActivity extends BasicActivity {
                 mainViewModel.logout();
             }
         });
+
+        searchUsersButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String query = (String) searchUsersEditText.getText().toString();
+                if(query.length()>0){
+                    mainViewModel.findUsers(query);
+                }
+            }
+        });
+
+
 
         listUsersButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,10 +134,11 @@ public class MainActivity extends BasicActivity {
         mainViewModel.getFriends().observe(this, new Observer<ArrayList<User>>() {
             @Override
             public void onChanged(ArrayList<User> friends) {
-                Log.v(TAG, friends.toString());
-                friendsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 if(friends.size()>0){
-                    friendsRecyclerView.setAdapter(new FriendsAdapter(friends));
+                    ArrayList<User> bufor = mainViewModel.getFriendsAdapterDataSet();
+                    bufor.clear();
+                    bufor.addAll(friends);
+                    mainViewModel.getFriendsAdapter().notifyDataSetChanged();
                 }
             }
         });
@@ -143,6 +155,18 @@ public class MainActivity extends BasicActivity {
                 }else
                 {
                     mainViewModel.logout();
+                }
+            }
+        });
+
+        mainViewModel.getSearchUserResult().observe(this, new Observer<ArrayList<User>>() {
+            @Override
+            public void onChanged(ArrayList<User> userArrayList) {
+                if(userArrayList.size()>0){
+                    ArrayList<User> bufor = mainViewModel.getSearchUsersAdapterDataSet();
+                    bufor.clear();
+                    bufor.addAll(userArrayList);
+                    mainViewModel.getSearchUsersAdapter().notifyDataSetChanged();
                 }
             }
         });

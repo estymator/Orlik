@@ -12,6 +12,14 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="my_dialog_theme" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="colorAccent">@color/dialogHeaderBackground</item>                   <!--header background-->
+        <item name="android:windowBackground">@color/dialogBackground</item>     <!--calendar background-->
+        <item name="android:colorActivatedHighlight">@color/dialogHighlight</item> <!--selected day-->
+        <item name="android:textColorPrimary">@color/dialogTextColor</item> <!--days of the month-->
+        <item name="android:textColorSecondary">@color/dialogTextColor</item>    <!--days of the week-->
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

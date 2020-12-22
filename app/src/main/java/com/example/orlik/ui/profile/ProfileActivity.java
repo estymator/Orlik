@@ -1,30 +1,32 @@
 package com.example.orlik.ui.profile;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.orlik.R;
+import com.example.orlik.data.adapters.GamesResultAdapter;
 import com.example.orlik.data.model.Friends;
+import com.example.orlik.data.model.Game;
 import com.example.orlik.data.model.Session;
 import com.example.orlik.data.model.User;
 import com.example.orlik.ui.Basic.BasicActivity;
-import com.example.orlik.ui.main.FriendsAdapter;
-import com.example.orlik.ui.main.MainViewModel;
-import com.example.orlik.ui.main.MainViewModelFactory;
+import com.example.orlik.data.adapters.FriendsAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
 public class ProfileActivity extends BasicActivity {
+    //TODO add statistic
     final static private String TAG="ProfileActivityTAG";
     private ProfileViewModel profileViewModel;
     BottomNavigationView bottomNavigationView;
@@ -32,6 +34,7 @@ public class ProfileActivity extends BasicActivity {
     private TextView nameTextView, loginTextView, gameTextView, winRatioTextView, trustRateTextView, gamesAttendTextView, gamesOrganizedTextView, friendsTextView;
     private Button friendButton;
     private RecyclerView gamesAttendRecyclerView, gamesOrganizedRecyclerView, friendsRecyclerView;
+    private RelativeLayout friendsRelativeLayout, organizedGamesRelativeLayout, attendGamesRelativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class ProfileActivity extends BasicActivity {
             profileViewModel.setUser(user);
             profileViewModel.setFriend(getIntent().getBooleanExtra("friend",false));
         }
+
 
         bottomNavigationView = findViewById(R.id.main_toolbar);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
@@ -60,11 +64,15 @@ public class ProfileActivity extends BasicActivity {
         gamesOrganizedTextView = (TextView) findViewById(R.id.profile_organizedGames_textView);
         friendsTextView = (TextView) findViewById(R.id.profile_friends_textView);
 
-        friendButton = (Button) findViewById(R.id.profile_deleteFriend_button);
+        friendButton = (Button) findViewById(R.id.profile_turnFriend_button);
 
         gamesAttendRecyclerView = (RecyclerView) findViewById(R.id.profile_attendGames_recycylerView);
         gamesOrganizedRecyclerView = (RecyclerView) findViewById(R.id.profile_organizedGames_recycylerView);
         friendsRecyclerView = (RecyclerView) findViewById(R.id.profile_friends_recycylerView);
+
+        friendsRelativeLayout = (RelativeLayout) findViewById(R.id.profile_friends_relativeLayout);
+        organizedGamesRelativeLayout = (RelativeLayout) findViewById(R.id.profile_organizedGames_relativeLayout);
+        attendGamesRelativeLayout = (RelativeLayout) findViewById(R.id.profile_attendGames_relativeLayout);
 
 
         loadViewValues();
@@ -73,7 +81,7 @@ public class ProfileActivity extends BasicActivity {
             @Override
             public void onChanged(ArrayList<User> users) {
                 friendsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                friendsRecyclerView.setAdapter(new FriendsAdapter(users));
+                friendsRecyclerView.setAdapter(new FriendsAdapter(users, true));
             }
         });
 
@@ -82,9 +90,10 @@ public class ProfileActivity extends BasicActivity {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if(aBoolean){
-                    profileViewModel.setFriend(false);
                     finish();
-                    startActivity(getIntent());
+                    Intent intent=getIntent();
+                    intent.putExtra("friend",false);
+                    startActivity(intent);
                 }
             }
         });
@@ -92,10 +101,33 @@ public class ProfileActivity extends BasicActivity {
         profileViewModel.getAddFriendsResult().observe(this, new Observer<Friends>() {
             @Override
             public void onChanged(Friends friends) {
-                if(friends.getFirstLogin()==profileViewModel.getLoggedinUserLogin() && friends.getSecondLogin()==profileViewModel.getUser().getLogin()){
-                    profileViewModel.setFriend(true);
+                Log.v(TAG,"Zmiana Friends"+friends.toString());
+                if(friends.getFirstLogin().equals(profileViewModel.getLoggedinUserLogin()) && friends.getSecondLogin().equals(profileViewModel.getUser().getLogin())){
                     finish();
-                    startActivity(getIntent()); //TODO check if friends array list need to be erased
+                    Intent intent=getIntent();
+                    intent.putExtra("friend",true);
+                    startActivity(intent); //TODO check if friends array list need to be erased
+                }
+
+            }
+        });
+
+        profileViewModel.getOrganisedGames().observe(this, new Observer<ArrayList<Game>>() {
+            @Override
+            public void onChanged(ArrayList<Game> games) {
+                if(games.size()>0){
+                    gamesOrganizedRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    gamesOrganizedRecyclerView.setAdapter(new GamesResultAdapter(games));
+                }
+            }
+        });
+
+        profileViewModel.getAttendGames().observe(this, new Observer<ArrayList<Game>>() {
+            @Override
+            public void onChanged(ArrayList<Game> games) {
+                if(games.size()>0){
+                    gamesAttendRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    gamesAttendRecyclerView.setAdapter(new GamesResultAdapter(games));
                 }
             }
         });
@@ -103,6 +135,7 @@ public class ProfileActivity extends BasicActivity {
 
 
     private void loadViewValues(){
+        Log.v(TAG, "loadViewValues");
         User user = profileViewModel.getUser();
         if(user==null) return;
 
@@ -120,6 +153,7 @@ public class ProfileActivity extends BasicActivity {
         trustRateTextView.setText("Współczynnik zaufania: "+user.getTrustRate());
 
         if(profileViewModel.isFriend()){
+            Log.v(TAG, "loadViewValues - Friends");
             friendButton.setText(R.string.profile_deleteFriend_button);
             friendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,17 +163,25 @@ public class ProfileActivity extends BasicActivity {
             });
 
             gamesOrganizedTextView.setVisibility(View.VISIBLE);
-            gamesOrganizedRecyclerView.setVisibility(View.VISIBLE);
+            organizedGamesRelativeLayout.setVisibility(View.VISIBLE);
             gamesAttendTextView.setVisibility(View.VISIBLE);
-            gamesAttendRecyclerView.setVisibility(View.VISIBLE);
+            attendGamesRelativeLayout.setVisibility(View.VISIBLE);
             friendsTextView.setVisibility(View.VISIBLE);
-            friendsRecyclerView.setVisibility(View.VISIBLE);
+            friendsRelativeLayout.setVisibility(View.VISIBLE);
 
             profileViewModel.getFriendsOfUser();
-            profileViewModel.getOrganisedGames();
-            profileViewModel.getAttendGames();
+            profileViewModel.getUserOrganisedGames();
+            profileViewModel.getUserAttendGames();
 
         }else{
+            Log.v(TAG, "loadViewValues-not Friends");
+            gamesOrganizedTextView.setVisibility(View.INVISIBLE);
+            organizedGamesRelativeLayout.setVisibility(View.INVISIBLE);
+            gamesAttendTextView.setVisibility(View.INVISIBLE);
+            attendGamesRelativeLayout.setVisibility(View.INVISIBLE);
+            friendsTextView.setVisibility(View.INVISIBLE);
+            friendsRelativeLayout.setVisibility(View.INVISIBLE);
+
             friendButton.setText(R.string.profile_addFriend_button);
             friendButton.setOnClickListener(new View.OnClickListener() {
                 @Override

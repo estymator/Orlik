@@ -2,6 +2,8 @@ package com.example.orlik.ui.organizeGames;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentContainerView;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -18,6 +20,7 @@ import com.example.orlik.R;
 import com.example.orlik.data.location.LocationGetter;
 import com.example.orlik.ui.Basic.BasicActivity;
 import com.example.orlik.ui.games.GamesActivity;
+import com.example.orlik.ui.games.SearchGameFragment;
 import com.example.orlik.ui.main.MainActivity;
 import com.example.orlik.ui.main.MainViewModel;
 import com.example.orlik.ui.main.MainViewModelFactory;
@@ -28,9 +31,6 @@ public class OrganizeActivity extends BasicActivity {
     BottomNavigationView bottomNavigationView;
     final private String TAG="OrganizeActivity";
     private OrganizeViewModel organizeViewModel;
-    private Spinner maxPlayersSpinner, minPlayersSpinner, visibilitySpinner, pitchSpinner;
-    private Button localizationButton;
-    private LocationGetter locationGetter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.v(TAG,"OnCreate");
@@ -45,29 +45,28 @@ public class OrganizeActivity extends BasicActivity {
         bottomNavigationView.setOnNavigationItemReselectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.menu_item_organize);
 
-        maxPlayersSpinner=(Spinner) findViewById(R.id.organize_max_players_spinner);
-        organizeViewModel.setOrganizeSpinner(maxPlayersSpinner,R.array.players_number_array);
+        if(savedInstanceState ==null){
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.organize_fragment_container_view, OrganizeMenuFragment.class , null)
+                    .commit();
 
-        minPlayersSpinner=(Spinner) findViewById(R.id.organize_min_players_spinner);
-        organizeViewModel.setOrganizeSpinner(minPlayersSpinner,R.array.players_number_array);
+        }
 
-        visibilitySpinner=(Spinner) findViewById(R.id.organize_visibility_spinner);
-        organizeViewModel.setOrganizeSpinner(visibilitySpinner,R.array.visibility_array);
-
-
-        pitchSpinner=(Spinner) findViewById(R.id.organize_pitch_spinner);
-        organizeViewModel.setOrganizeSpinner(pitchSpinner,R.array.pitch_array);
-
-        localizationButton=(Button) findViewById(R.id.organize_localization_button);
-
-
-
-
-        localizationButton.setOnClickListener(new View.OnClickListener() {
+        organizeViewModel.getFragmentNavigator().observe(this, new Observer<String>() {
             @Override
-            public void onClick(View v) {
-               Log.v(TAG, locationGetter.getLat()+" "+locationGetter.getLon());
-
+            public void onChanged(String s) {
+                switch (s){
+                    case "game":
+                        getSupportFragmentManager().beginTransaction()
+                                .setReorderingAllowed(true)
+                                .addToBackStack(null)
+                                .replace(R.id.organize_fragment_container_view, OrganizeAddGameFragment.class , null)
+                                .commit();
+                        break;
+                    case "Pitch":
+                        Log.v(TAG ,"Pitch");
+                }
             }
         });
 

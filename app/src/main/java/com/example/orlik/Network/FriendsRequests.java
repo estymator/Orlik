@@ -3,6 +3,7 @@ package com.example.orlik.Network;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.example.orlik.data.model.Friends;
 import com.example.orlik.data.model.User;
@@ -20,6 +21,8 @@ public class FriendsRequests {
     private MutableLiveData<ArrayList<User>> friendsList;
     private MutableLiveData<Boolean> deleteFriendsResult;
     private MutableLiveData<Friends> addFriendsResult;
+
+
 
 
     public void loadFriends(String login, MutableLiveData<ArrayList<User>> friendsList){
@@ -135,9 +138,11 @@ public class FriendsRequests {
         this.deleteFriendsResult.setValue(false);
     }
 
-    public void addFriends(String firstLogin, String secondLogin, MutableLiveData<Friends> addFriendsResult){
-        this.addFriendsResult=addFriendsResult;
+    public void addFriends(String firstLogin, String secondLogin, MutableLiveData<Friends> addFriends){
+
+        this.addFriendsResult=addFriends;
         serverAPI = RetrofitServiceGenerator.createService(ServerAPI.class);
+        
         try{
             Call<Friends> addFriendsCall = serverAPI.addFriends(firstLogin,secondLogin);
 
@@ -145,11 +150,10 @@ public class FriendsRequests {
                 @Override
                 public void onResponse(Call<Friends> call, Response<Friends> response) {
                     if(response.isSuccessful()){
-
                         if(response.body()!=null) {
                             Friends result = new Friends();
                             try{
-                                result = (Friends) response.body();
+                                result = response.body();
                             }catch (Throwable t){
                                 getAllFriendsFailure(t.getMessage());
                             }
@@ -184,6 +188,7 @@ public class FriendsRequests {
 
 
     private void addFriendsSuccess(Friends result){
+        Log.v(TAG, "addFriendsSuccess");
         this.addFriendsResult.setValue(result);
     }
     private void addFriendsFailure(String mess){

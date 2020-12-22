@@ -49,7 +49,7 @@ public class GamesActivity extends BasicActivity {
                     getSupportFragmentManager().beginTransaction()
                             .setReorderingAllowed(true)
                             .addToBackStack(null)
-                            .add(R.id.games_fragment_container_view, GamesResultFragment.class , null)
+                            .replace(R.id.games_fragment_container_view, GamesResultFragment.class , null)
                             .commit();
                 }
             }

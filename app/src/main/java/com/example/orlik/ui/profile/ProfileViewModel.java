@@ -1,9 +1,13 @@
 package com.example.orlik.ui.profile;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.example.orlik.Network.FriendsRequests;
+import com.example.orlik.Network.GameRequests;
 import com.example.orlik.data.model.Friends;
 import com.example.orlik.data.model.Game;
 import com.example.orlik.data.model.User;
@@ -15,12 +19,13 @@ public class ProfileViewModel extends ViewModel {
     private User user;
     private String loggedinUserLogin;
     private MutableLiveData<ArrayList<User>> friends = new MutableLiveData<>();
-    private MutableLiveData<Game> organisedGames = new MutableLiveData<>();
-    private MutableLiveData<Game> attendGames = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Game>> organisedGames = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Game>> attendGames = new MutableLiveData<>();
     private MutableLiveData<Boolean> deleteFriendsResult = new MutableLiveData<>();
     private MutableLiveData<Friends> addFriendsResult = new MutableLiveData<>();
     private boolean isFriend;
-    FriendsRequests friendsRequests = new FriendsRequests();
+    private FriendsRequests friendsRequests = new FriendsRequests();
+    private GameRequests gameRequests = new GameRequests();
 
     public String getLoggedinUserLogin() {
         return loggedinUserLogin;
@@ -36,6 +41,7 @@ public class ProfileViewModel extends ViewModel {
 
 
     public void setFriend(boolean friend) {
+        Log.v(TAG, "SET FRIENDS"+friend);
         isFriend = friend;
     }
 
@@ -47,48 +53,39 @@ public class ProfileViewModel extends ViewModel {
         this.user = user;
     }
 
+
     public MutableLiveData<ArrayList<User>> getFriends() {
         return friends;
     }
 
-    public void setFriends(MutableLiveData<ArrayList<User>> friends) {
-        this.friends = friends;
+    public MutableLiveData<ArrayList<Game>> getOrganisedGames(){
+        return organisedGames;
     }
 
-    public void setOrganisedGames(MutableLiveData<Game> organisedGames) {
-        this.organisedGames = organisedGames;
-    }
-
-    public void setAttendGames(MutableLiveData<Game> attendGames) {
-        this.attendGames = attendGames;
+    public MutableLiveData<ArrayList<Game>> getAttendGames() {
+        return attendGames;
     }
 
     public MutableLiveData<Boolean> getDeleteFriendsResult() {
         return deleteFriendsResult;
     }
 
-    public void setDeleteFriendsResult(MutableLiveData<Boolean> deleteFriendsResult) {
-        this.deleteFriendsResult = deleteFriendsResult;
-    }
 
     public MutableLiveData<Friends> getAddFriendsResult() {
         return addFriendsResult;
     }
 
-    public void setAddFriendsResult(MutableLiveData<Friends> addFriendsResult) {
-        this.addFriendsResult = addFriendsResult;
-    }
 
     public void getFriendsOfUser(){
         friendsRequests.loadFriends(user.getLogin(),friends);
     }
 
-    public void getOrganisedGames(){
-
+    public void getUserOrganisedGames(){
+        gameRequests.loadOrganisedGames(loggedinUserLogin, organisedGames);
     }
 
-    public void getAttendGames(){
-
+    public void getUserAttendGames(){
+        gameRequests.loadAttendGames(loggedinUserLogin, attendGames);
     }
 
     public void addFriends(){
@@ -98,4 +95,6 @@ public class ProfileViewModel extends ViewModel {
     public void deleteFriends(){
         friendsRequests.deleteFriends(loggedinUserLogin,user.getLogin(), deleteFriendsResult);
     }
+
+
 }
