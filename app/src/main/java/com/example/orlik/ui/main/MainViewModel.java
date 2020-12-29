@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.orlik.Network.FriendsRequests;
+import com.example.orlik.Network.GameRequests;
 import com.example.orlik.Network.UserRequests;
 import com.example.orlik.data.adapters.FriendsAdapter;
 import com.example.orlik.data.model.User;
@@ -24,6 +25,7 @@ public class MainViewModel extends ViewModel {
     private MutableLiveData<User> loggedInUser= new MutableLiveData<>();
     private MutableLiveData<ArrayList<User>> friends=new MutableLiveData<>(new ArrayList<User>());
     private UserRequests userRequests = new UserRequests();
+    private GameRequests gameRequests = new GameRequests();
     private FriendsRequests friendsRequests = new FriendsRequests();
     private ArrayList<User> friendsAdapterDataSet = new ArrayList<>();
     private ArrayList<User> searchUsersAdapterDataSet = new ArrayList<>();

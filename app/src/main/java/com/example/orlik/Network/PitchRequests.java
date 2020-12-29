@@ -17,6 +17,7 @@ import retrofit2.Response;
 public class PitchRequests {
     public final static String TAG = "PitchRequestsTAG";
     private ServerAPI serverAPI;
+    private MutableLiveData<Pitch> addPitchResult;
     private MutableLiveData<ArrayList<Pitch>> pitchList;
     public void getPitchInGivenRange(double lat, double lon, int range, MutableLiveData<ArrayList<Pitch>> pitchList){
         this.serverAPI=RetrofitServiceGenerator.createService(ServerAPI.class);
@@ -56,13 +57,60 @@ public class PitchRequests {
         {
             Log.v(TAG,e.getMessage());
         }
-
     }
     private void getPitchSuccesfully(ArrayList<Pitch> result){
         this.pitchList.setValue(result);
     }
 
     private void getPitchFailure(String mess){
+        Log.v(TAG,mess);
+    }
+
+    public void addPitch(String localization, String address, String pitchType, MutableLiveData<Pitch> addPitchResult){
+        this.serverAPI=RetrofitServiceGenerator.createService(ServerAPI.class);
+        this.addPitchResult=addPitchResult;
+        try{
+            Call<Pitch> addPitchCall = serverAPI.addPitch(pitchType,localization, address);
+            addPitchCall.enqueue(new Callback<Pitch>(){
+                @Override
+                public void onResponse(Call<Pitch> call, Response<Pitch> response) {
+                    if(response.isSuccessful()){
+                        if(response.body()!=null) {
+                            Pitch result= new Pitch();
+                            try{
+                                result =(Pitch) response.body();
+                            }catch (Throwable t){
+                                addPitchFailure(t.getMessage());
+                            }
+                            addPitchSuccesfully(result);
+                        }else
+                        {
+                            addPitchFailure("Bład pobrania danych");
+                        }
+                    }else{
+                        Log.v(TAG,"ResponseSuccessful not 200");
+                        Gson gson = new Gson();
+                        NetworkError errorBody = gson.fromJson(response.errorBody().charStream(), NetworkError.class);
+                        String message = errorBody.getMessage();
+                        addPitchFailure(message);
+                    }
+                }
+                @Override
+                public void onFailure(Call<Pitch> call, Throwable t) {
+                    addPitchFailure(t.getMessage());
+                }
+            });
+        }catch (Exception e)
+        {
+            Log.v(TAG,e.getMessage());
+        }
+
+    }
+    private void addPitchSuccesfully(Pitch result){
+        this.addPitchResult.setValue(result);
+    }
+
+    private void addPitchFailure(String mess){
         Log.v(TAG,mess);
     }
 }

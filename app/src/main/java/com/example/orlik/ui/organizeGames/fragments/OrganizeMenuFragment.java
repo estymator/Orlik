@@ -57,5 +57,12 @@ public class OrganizeMenuFragment extends Fragment {
                 organizeViewModel.getFragmentNavigator().setValue("game");
             }
         });
+
+        addPitchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                organizeViewModel.getFragmentNavigator().setValue("pitch");
+            }
+        });
     }
 }

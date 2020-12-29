@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.orlik.data.model.Game;
 import com.example.orlik.data.model.User;
+import com.example.orlik.data.model.dto.GameDTO;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -17,21 +18,23 @@ import retrofit2.Response;
 public class GameRequests {
     private final static String TAG="GameRequestsTAG";
     private ServerAPI serverAPI;
-    private MutableLiveData<ArrayList<Game>> gamesList, organisedGames, attendGames;
-    public void loadGames(double lat, double lon, int range, String type, MutableLiveData<ArrayList<Game>> gamesList){
+    private MutableLiveData<ArrayList<GameDTO>> gamesList, organisedGames, attendGames;
+    private MutableLiveData<Game> addGameResult;
+
+    public void loadGames(double lat, double lon, int range, String type, MutableLiveData<ArrayList<GameDTO>> gamesList){
         this.gamesList=gamesList;
         serverAPI = RetrofitServiceGenerator.createService(ServerAPI.class);
         try{
-            Call<ArrayList<Game>> getGamesCall = serverAPI.getGames(lat,lon,range,type);
-            getGamesCall.enqueue(new Callback<ArrayList<Game>>(){
+            Call<ArrayList<GameDTO>> getGamesCall = serverAPI.getGames(lat,lon,range,type);
+            getGamesCall.enqueue(new Callback<ArrayList<GameDTO>>(){
                 @Override
-                public void onResponse(Call<ArrayList<Game>> call, Response<ArrayList<Game>> response) {
+                public void onResponse(Call<ArrayList<GameDTO>> call, Response<ArrayList<GameDTO>> response) {
                     if(response.isSuccessful()){
 
                         if(response.body()!=null) {
-                            ArrayList<Game> result= new ArrayList();
+                            ArrayList<GameDTO> result= new ArrayList();
                             try{
-                                result =(ArrayList<Game>) response.body();
+                                result =(ArrayList<GameDTO>) response.body();
                             }catch (Throwable t){
                                 getGamesFailure(t.getMessage());
                             }
@@ -50,7 +53,7 @@ public class GameRequests {
                     }
                 }
                 @Override
-                public void onFailure(Call<ArrayList<Game>> call, Throwable t) {
+                public void onFailure(Call<ArrayList<GameDTO>> call, Throwable t) {
                     Log.v(TAG,"onFailure");
                     getGamesFailure(t.getMessage());
                 }
@@ -61,28 +64,28 @@ public class GameRequests {
         }
     }
 
-    private void getGamesSuccess(ArrayList<Game> result){
+    private void getGamesSuccess(ArrayList<GameDTO> result){
         this.gamesList.setValue(result);
     }
 
     private void getGamesFailure(String mess){
         Log.v(TAG, mess);
-        this.gamesList.setValue(new ArrayList<Game>());
+        this.gamesList.setValue(new ArrayList<GameDTO>());
     }
 
-    public void loadOrganisedGames(String organiserLogin, MutableLiveData<ArrayList<Game>> organisedGames){
+    public void loadOrganisedGames(String organiserLogin, MutableLiveData<ArrayList<GameDTO>> organisedGames){
         this.organisedGames=organisedGames;
         serverAPI = RetrofitServiceGenerator.createService(ServerAPI.class);
         try{
-            Call<ArrayList<Game>> getGamesByOrganiserCall = serverAPI.getGamesByOrganiserLogin(organiserLogin);
-            getGamesByOrganiserCall.enqueue(new Callback<ArrayList<Game>>(){
+            Call<ArrayList<GameDTO>> getGamesByOrganiserCall = serverAPI.getGamesByOrganiserLogin(organiserLogin);
+            getGamesByOrganiserCall.enqueue(new Callback<ArrayList<GameDTO>>(){
                 @Override
-                public void onResponse(Call<ArrayList<Game>> call, Response<ArrayList<Game>> response) {
+                public void onResponse(Call<ArrayList<GameDTO>> call, Response<ArrayList<GameDTO>> response) {
                     if(response.isSuccessful()){
                         if(response.body()!=null) {
-                            ArrayList<Game> result= new ArrayList();
+                            ArrayList<GameDTO> result= new ArrayList();
                             try{
-                                result =(ArrayList<Game>) response.body();
+                                result =(ArrayList<GameDTO>) response.body();
                             }catch (Throwable t){
                                 getOrganizedGamesFailure(t.getMessage());
                             }
@@ -101,7 +104,7 @@ public class GameRequests {
                     }
                 }
                 @Override
-                public void onFailure(Call<ArrayList<Game>> call, Throwable t) {
+                public void onFailure(Call<ArrayList<GameDTO>> call, Throwable t) {
                     Log.v(TAG,"onFailure");
                     getOrganizedGamesFailure(t.getMessage());
                 }
@@ -113,7 +116,7 @@ public class GameRequests {
         }
     }
 
-    private void getOrganizedGamesSuccess(ArrayList<Game> result){
+    private void getOrganizedGamesSuccess(ArrayList<GameDTO> result){
         this.organisedGames.setValue(result);
     }
 
@@ -121,20 +124,20 @@ public class GameRequests {
         Log.v(TAG, mess);
     }
 
-    public void loadAttendGames(String playerLogin, MutableLiveData<ArrayList<Game>> attendGames){
+    public void loadAttendGames(String playerLogin, MutableLiveData<ArrayList<GameDTO>> attendGames){
         this.attendGames=attendGames;
         serverAPI = RetrofitServiceGenerator.createService(ServerAPI.class);
         try{
-            Call<ArrayList<Game>> getAttendGamesCall = serverAPI.getGamesByPlayerLogin(playerLogin);
+            Call<ArrayList<GameDTO>> getAttendGamesCall = serverAPI.getGamesByPlayerLogin(playerLogin);
 
-            getAttendGamesCall.enqueue(new Callback<ArrayList<Game>>(){
+            getAttendGamesCall.enqueue(new Callback<ArrayList<GameDTO>>(){
                 @Override
-                public void onResponse(Call<ArrayList<Game>> call, Response<ArrayList<Game>> response) {
+                public void onResponse(Call<ArrayList<GameDTO>> call, Response<ArrayList<GameDTO>> response) {
                     if(response.isSuccessful()){
                         if(response.body()!=null) {
-                            ArrayList<Game> result= new ArrayList();
+                            ArrayList<GameDTO> result= new ArrayList();
                             try{
-                                result =(ArrayList<Game>) response.body();
+                                result =(ArrayList<GameDTO>) response.body();
                             }catch (Throwable t){
                                 getGamesFailure(t.getMessage());
                             }
@@ -154,7 +157,7 @@ public class GameRequests {
                 }
 
                 @Override
-                public void onFailure(Call<ArrayList<Game>> call, Throwable t) {
+                public void onFailure(Call<ArrayList<GameDTO>> call, Throwable t) {
                     Log.v(TAG,"onFailure");
                     getGamesFailure(t.getMessage());
                 }
@@ -166,11 +169,64 @@ public class GameRequests {
         }
     }
 
-    private void getAttendGamesSuccess(ArrayList<Game> result){
+    private void getAttendGamesSuccess(ArrayList<GameDTO> result){
         this.attendGames.setValue(result);
     }
 
     private void getAttendGamesFailure(String mess){
+        Log.v(TAG, mess);
+    }
+
+    public void addGame(String login, int pitchId, int maxPlayers, int minPlayers, int visibility, String schedule, String description, Integer duration, Boolean isOrganserPlaying, MutableLiveData<Game> addGameResult){
+        this.addGameResult=addGameResult;
+        serverAPI = RetrofitServiceGenerator.createService(ServerAPI.class);
+        try{
+            Call<Game> addGameCall = serverAPI.addGame(maxPlayers,minPlayers,pitchId,login,visibility,schedule, description, duration, isOrganserPlaying);
+
+            addGameCall.enqueue(new Callback<Game>(){
+                @Override
+                public void onResponse(Call<Game> call, Response<Game> response) {
+                    if(response.isSuccessful()){
+                        if(response.body()!=null) {
+                            Game result= new Game();
+                            try{
+                                result =(Game) response.body();
+                            }catch (Throwable t){
+                                addGameFailure(t.getMessage());
+                            }
+                            addGameSuccess(result);
+                        }else
+                        {
+                            addGameFailure("Bład pobrania danych");
+                        }
+                    }else{
+                        Log.v(TAG,"ResponseSuccessful not 200");
+                        Gson gson = new Gson();
+                        NetworkError errorBody = gson.fromJson(response.errorBody().charStream(), NetworkError.class);
+                        String message = errorBody.getMessage();
+                        Log.v(TAG,message);
+                        addGameFailure(message);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Game> call, Throwable t) {
+                    Log.v(TAG,"onFailure");
+                    addGameFailure(t.getMessage());
+                }
+            });
+
+        }catch (Exception e)
+        {
+            addGameFailure(e.getMessage());
+        }
+    }
+
+    private void addGameSuccess(Game result){
+        this.addGameResult.setValue(result);
+    }
+
+    private void addGameFailure(String mess){
         Log.v(TAG, mess);
     }
 }

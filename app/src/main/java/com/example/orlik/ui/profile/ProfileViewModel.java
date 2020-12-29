@@ -11,6 +11,7 @@ import com.example.orlik.Network.GameRequests;
 import com.example.orlik.data.model.Friends;
 import com.example.orlik.data.model.Game;
 import com.example.orlik.data.model.User;
+import com.example.orlik.data.model.dto.GameDTO;
 
 import java.util.ArrayList;
 
@@ -19,8 +20,8 @@ public class ProfileViewModel extends ViewModel {
     private User user;
     private String loggedinUserLogin;
     private MutableLiveData<ArrayList<User>> friends = new MutableLiveData<>();
-    private MutableLiveData<ArrayList<Game>> organisedGames = new MutableLiveData<>();
-    private MutableLiveData<ArrayList<Game>> attendGames = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<GameDTO>> organisedGames = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<GameDTO>> attendGames = new MutableLiveData<>();
     private MutableLiveData<Boolean> deleteFriendsResult = new MutableLiveData<>();
     private MutableLiveData<Friends> addFriendsResult = new MutableLiveData<>();
     private boolean isFriend;
@@ -58,11 +59,11 @@ public class ProfileViewModel extends ViewModel {
         return friends;
     }
 
-    public MutableLiveData<ArrayList<Game>> getOrganisedGames(){
+    public MutableLiveData<ArrayList<GameDTO>> getOrganisedGames(){
         return organisedGames;
     }
 
-    public MutableLiveData<ArrayList<Game>> getAttendGames() {
+    public MutableLiveData<ArrayList<GameDTO>> getAttendGames() {
         return attendGames;
     }
 

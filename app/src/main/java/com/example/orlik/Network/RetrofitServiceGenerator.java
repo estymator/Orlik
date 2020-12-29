@@ -28,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitServiceGenerator {
     private static final String BASE_URL = "https://healthservice.fromato.com:8082/";
-//    private static final String BASE_URL = "http://localhost:8082/";
+    //private static final String BASE_URL = "http://localhost:8082/";
     private static String token="";
     private static CookieHandler cookieHandler = new CookieManager(); //for session menagment
 

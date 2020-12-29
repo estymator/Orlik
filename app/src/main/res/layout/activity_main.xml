@@ -94,12 +94,12 @@
         android:layout_marginTop="@dimen/basic_margin"
         android:layout_below="@id/main_trustRate_TextView"
         />
-        <RelativeLayout
-            android:id="@+id/main_friends_linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/scroll_view_height"
-            android:layout_below="@id/main_friends_TextView"
-            >
+    <RelativeLayout
+        android:id="@+id/main_friends_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/scroll_view_height"
+        android:layout_below="@id/main_friends_TextView"
+        >
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/main_friends_scrollView"
                 android:layout_width="match_parent"
@@ -118,7 +118,73 @@
                 </LinearLayout>
 
             </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/main_organizedGames_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/barBackground"
+        android:layout_marginBottom="@dimen/basic_margin"
+        android:layout_below="@id/main_friends_relativeLayout"
+        android:text="@string/profile_gameOrganized_textView"
+        android:textColor="@color/textColorPrimary" />
+
+        <RelativeLayout
+        android:id="@+id/main_organizedGames_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/scroll_view_height"
+        android:layout_below="@id/main_organizedGames_textView">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/main_organizedGames_recycylerView"
+                    android:layout_margin="@dimen/basic_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+            </androidx.core.widget.NestedScrollView>
+
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/main_attendGames_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/barBackground"
+            android:layout_marginBottom="@dimen/basic_margin"
+            android:layout_below="@id/main_organizedGames_relativeLayout"
+            android:text="@string/profile_gameAttend_textView"
+            android:textColor="@color/textColorPrimary"
+            />
+
+        <RelativeLayout
+            android:id="@+id/main_attendGames_relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/scroll_view_height"
+            android:layout_below="@id/main_attendGames_textView">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/main_attendGames_recycylerView"
+                    android:layout_margin="@dimen/basic_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/profile_attendGames_textView"
+                    />
+
+            </androidx.core.widget.NestedScrollView>
+
+        </RelativeLayout>
+
+
     <TextView
         android:id="@+id/main_searchFriends_TextView"
         android:layout_width="match_parent"
@@ -127,7 +193,7 @@
         android:textColor="@color/textColorPrimary"
         android:text="@string/main_searchFriends_textView"
         android:layout_marginTop="@dimen/basic_margin"
-        android:layout_below="@id/main_friends_linearLayout"
+        android:layout_below="@id/main_attendGames_relativeLayout"
         />
 
     <Button
@@ -151,7 +217,8 @@
         android:id="@+id/main_searchUsers_linearLayout"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_below="@id/main_searchFriends_EditText">
+        android:layout_below="@id/main_searchFriends_EditText"
+        android:visibility="gone">
         <androidx.core.widget.NestedScrollView
             android:id="@+id/main_searchUsers_scrollView"
             android:layout_width="fill_parent"

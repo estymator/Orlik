@@ -58,7 +58,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int position){
+    public void onBindViewHolder(ViewHolder viewHolder, final int position){ //TODO once get nullpointerExc when launch app, try to setText on null
         viewHolder.getNameTextView().setText(users.get(position).getName()+" "+users.get(position).getSurname());
 
         viewHolder.getProfileButton().setOnClickListener(new View.OnClickListener() {

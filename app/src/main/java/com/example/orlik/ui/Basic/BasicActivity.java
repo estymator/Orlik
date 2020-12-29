@@ -62,6 +62,8 @@ public class BasicActivity extends AppCompatActivity implements BottomNavigation
         }else if(session.getCredentials()!=null){
             RetrofitServiceGenerator.setCredentials(session.getCredentials().split(":")[0],session.getCredentials().split(":")[1]);
         }
+
+
     }
 
     @Override
@@ -125,6 +127,40 @@ public class BasicActivity extends AppCompatActivity implements BottomNavigation
 
     @Override
     public void onNavigationItemReselected(@NonNull MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()){
+            case R.id.menu_item_profile:
+                if(this instanceof MainActivity) break;
+                Log.v(TAG,"main");
+                intent= new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+
+            case R.id.menu_item_settings:
+                if(this instanceof SettingsActivity) break;
+                Log.v(TAG,"ustawienia");
+                intent= new Intent(this, SettingsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+
+            case R.id.menu_item_organize:
+                if(this instanceof OrganizeActivity) break;
+                Log.v(TAG,"stwórz");
+                intent= new Intent(this, OrganizeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+
+            case R.id.menu_item_games:
+                if(this instanceof GamesActivity) break;
+                Log.v(TAG,"GRY");
+                intent= new Intent(this, GamesActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+        }
         Log.v(TAG,"Reselect");
     }
 

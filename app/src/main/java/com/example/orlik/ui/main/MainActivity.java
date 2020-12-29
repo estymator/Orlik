@@ -21,6 +21,7 @@ import android.view.View;
 
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ public class MainActivity extends BasicActivity {
     TextView nameTextView, gamesTextView, wonTextView, trustRateTextView, wonRatioTextView, loginTextView;
     RecyclerView friendsRecyclerView, searchUserRecyclerView;
     EditText searchUsersEditText;
+    LinearLayout searchUsersLinearLayout;
     ScrollView friendsScrollView;
     //TODO do not return currently logged in user as a search result
 
@@ -77,6 +79,7 @@ public class MainActivity extends BasicActivity {
         bottomNavigationView.setOnNavigationItemReselectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.menu_item_profile);
 
+        searchUsersLinearLayout = (LinearLayout) findViewById(R.id.main_searchUsers_linearLayout);
 
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -163,6 +166,7 @@ public class MainActivity extends BasicActivity {
             @Override
             public void onChanged(ArrayList<User> userArrayList) {
                 if(userArrayList.size()>0){
+                    searchUsersLinearLayout.setVisibility(View.VISIBLE);
                     ArrayList<User> bufor = mainViewModel.getSearchUsersAdapterDataSet();
                     bufor.clear();
                     bufor.addAll(userArrayList);

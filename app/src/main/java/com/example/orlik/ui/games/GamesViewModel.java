@@ -13,6 +13,7 @@ import com.example.orlik.R;
 import com.example.orlik.data.location.LocationGetter;
 import com.example.orlik.data.model.Game;
 import com.example.orlik.data.model.Pitch;
+import com.example.orlik.data.model.dto.GameDTO;
 
 import java.util.ArrayList;
 
@@ -21,7 +22,7 @@ public class GamesViewModel extends ViewModel{
     private MutableLiveData<ArrayList<Pitch>> searchResult;
     private LocationGetter locationGetter;
     private MutableLiveData<String> address = new MutableLiveData<>();
-    private MutableLiveData<ArrayList<Game>> gamesList = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<GameDTO>> gamesList = new MutableLiveData<>();
     private String pitchItem;
     private String rangeItem;
     private GameRequests gameRequests = new GameRequests();
@@ -34,7 +35,7 @@ public class GamesViewModel extends ViewModel{
         return address;
     }
 
-    public MutableLiveData<ArrayList<Game>> getGamesList() {
+    public MutableLiveData<ArrayList<GameDTO>> getGamesList() {
         return gamesList;
     }
 

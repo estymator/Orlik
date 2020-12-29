@@ -9,6 +9,7 @@ import android.util.Log;
 import com.example.orlik.R;
 import com.example.orlik.ui.Basic.BasicActivity;
 import com.example.orlik.ui.organizeGames.fragments.OrganizeAddGameFragment;
+import com.example.orlik.ui.organizeGames.fragments.OrganizeAddPitchFragment;
 import com.example.orlik.ui.organizeGames.fragments.OrganizeMenuFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -49,8 +50,13 @@ public class OrganizeActivity extends BasicActivity {
                                 .replace(R.id.organize_fragment_container_view, OrganizeAddGameFragment.class , null)
                                 .commit();
                         break;
-                    case "Pitch":
-                        Log.v(TAG ,"Pitch");
+                    case "pitch":
+                        getSupportFragmentManager().beginTransaction()
+                                .setReorderingAllowed(true)
+                                .addToBackStack(null)
+                                .replace(R.id.organize_fragment_container_view, OrganizeAddPitchFragment.class , null)
+                                .commit();
+                        break;
                 }
             }
         });

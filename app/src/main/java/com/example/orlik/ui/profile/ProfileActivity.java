@@ -19,6 +19,7 @@ import com.example.orlik.data.model.Friends;
 import com.example.orlik.data.model.Game;
 import com.example.orlik.data.model.Session;
 import com.example.orlik.data.model.User;
+import com.example.orlik.data.model.dto.GameDTO;
 import com.example.orlik.ui.Basic.BasicActivity;
 import com.example.orlik.data.adapters.FriendsAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -112,9 +113,9 @@ public class ProfileActivity extends BasicActivity {
             }
         });
 
-        profileViewModel.getOrganisedGames().observe(this, new Observer<ArrayList<Game>>() {
+        profileViewModel.getOrganisedGames().observe(this, new Observer<ArrayList<GameDTO>>() {
             @Override
-            public void onChanged(ArrayList<Game> games) {
+            public void onChanged(ArrayList<GameDTO> games) {
                 if(games.size()>0){
                     gamesOrganizedRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     gamesOrganizedRecyclerView.setAdapter(new GamesResultAdapter(games));
@@ -122,9 +123,9 @@ public class ProfileActivity extends BasicActivity {
             }
         });
 
-        profileViewModel.getAttendGames().observe(this, new Observer<ArrayList<Game>>() {
+        profileViewModel.getAttendGames().observe(this, new Observer<ArrayList<GameDTO>>() {
             @Override
-            public void onChanged(ArrayList<Game> games) {
+            public void onChanged(ArrayList<GameDTO> games) {
                 if(games.size()>0){
                     gamesAttendRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     gamesAttendRecyclerView.setAdapter(new GamesResultAdapter(games));

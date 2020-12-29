@@ -4,10 +4,10 @@ import java.time.LocalDate;
 
 public class Game {
     private Integer gameId;
-    private Integer maxPlayersNumber,minPlayersNumber, pitchId, visibility, players;
+    private Integer maxPlayersNumber,minPlayersNumber, pitchId, visibility, players, duration;
     private String organizerLogin;
     private String schedule;
-    private String status;
+    private String status, description;
 
     public Integer getGameId(){
         return gameId;
@@ -35,6 +35,14 @@ public class Game {
 
     public void setPitchId(Integer pitchId) {
         this.pitchId = pitchId;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
     public Integer getVisibility() {
@@ -77,10 +85,18 @@ public class Game {
         this.players = players;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Game(){};
 
 
-    public Game(Integer id, Integer maxPlayersNumber, Integer minPlayersNumber, Integer pitchId, Integer visibility, String organiserLogin, String s) {
+    public Game(Integer id, Integer maxPlayersNumber, Integer minPlayersNumber, Integer pitchId, Integer visibility, String organiserLogin, String s, String description, Integer duration) {
         this.gameId=id;
         this.maxPlayersNumber = maxPlayersNumber;
         this.minPlayersNumber = minPlayersNumber;
@@ -88,20 +104,24 @@ public class Game {
         this.visibility = visibility;
         this.organizerLogin = organiserLogin;
         this.schedule = s;
+        this.description=description;
+        this.duration=duration;
     }
 
     @Override
     public String toString() {
-        return "{" +
+        return "Game{" +
                 "gameId=" + gameId +
                 ", maxPlayersNumber=" + maxPlayersNumber +
                 ", minPlayersNumber=" + minPlayersNumber +
                 ", pitchId=" + pitchId +
                 ", visibility=" + visibility +
                 ", players=" + players +
+                ", duration=" + duration +
                 ", organizerLogin='" + organizerLogin + '\'' +
-                ", schedule=" + schedule +
+                ", schedule='" + schedule + '\'' +
                 ", status='" + status + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

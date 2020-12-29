@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,16 +20,20 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.orlik.R;
 import com.example.orlik.data.location.LocationGetter;
+import com.example.orlik.data.model.Game;
 import com.example.orlik.data.model.Pitch;
 import com.example.orlik.ui.organizeGames.OrganizeViewModel;
 import com.example.orlik.ui.organizeGames.OrganizeViewModelFactory;
 import com.example.orlik.ui.organizeGames.dialogs.DateDialagFragment;
 import com.example.orlik.ui.organizeGames.dialogs.TimeDialogFragment;
+import com.example.orlik.ui.organizeGames.formsState.AddGameFormState;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,11 +49,13 @@ public class OrganizeAddGameFragment extends Fragment {
     private OrganizeViewModel organizeViewModel;
     private Spinner maxPlayersSpinner, minPlayersSpinner, visibilitySpinner, pitchSpinner;
     private TextView gameDate, gameTime;
+    private EditText descriptionEditText, durationEditText;
     private CheckBox isOrganizerPlaying;
     Button addGameButton;
-    private Calendar date = Calendar.getInstance();
-    private  int day=date.get(Calendar.DAY_OF_MONTH), month=date.get(Calendar.MONTH), year=date.get(Calendar.YEAR);
-    private int hour=(date.get(Calendar.HOUR_OF_DAY)==24)? 00:(date.get(Calendar.HOUR)+1);
+    private TextWatcher addGameTextWatcher;
+    private Calendar date;
+    private  int day, month, year;
+    private int hour;
 
     public OrganizeAddGameFragment() {
         // Required empty public constructor
@@ -59,6 +67,55 @@ public class OrganizeAddGameFragment extends Fragment {
         Log.v(TAG, "onCreate");
         organizeViewModel = new ViewModelProvider(requireActivity(), new OrganizeViewModelFactory())
                 .get(OrganizeViewModel.class);
+        date = Calendar.getInstance();
+        day=date.get(Calendar.DAY_OF_MONTH);
+        month=date.get(Calendar.MONTH);
+        year=date.get(Calendar.YEAR);
+        hour=(date.get(Calendar.HOUR_OF_DAY)==24)? 00:(date.get(Calendar.HOUR)+1);
+        organizeViewModel.getAddGameResult().setValue(null);
+        organizeViewModel.getAddGameResult().observe(this, new Observer<Game>() {
+            @Override
+            public void onChanged(Game game) {
+                if(game!=null){
+                    Toast.makeText(requireContext(),"Dodano Mecz", Toast.LENGTH_LONG).show();
+                    getParentFragmentManager().popBackStack();
+                }
+            }
+        });
+
+        addGameTextWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String desc=descriptionEditText.getText().toString();
+                String duration = durationEditText.getText().toString();
+                organizeViewModel.addGameFormDataChanged(desc, duration);
+            }
+        };
+
+        organizeViewModel.getAddGameState().observe(this, new Observer<AddGameFormState>() {
+            @Override
+            public void onChanged(AddGameFormState addGameFormState) {
+                addGameButton.setEnabled(addGameFormState.getDataValid());
+                if(addGameFormState.getDescriptionError()){
+                    descriptionEditText.setError("Max 30 znaków");
+                }else if(addGameFormState.getDurationError()){
+                    durationEditText.setError("Błędne dane");
+                }else{
+                    organizeViewModel.setDuration(Integer.valueOf(durationEditText.getText().toString()));
+                    organizeViewModel.setDescription(descriptionEditText.getText().toString());
+                }
+            }
+        });
     }
 
     @Override
@@ -85,7 +142,7 @@ public class OrganizeAddGameFragment extends Fragment {
             }
         });
 
-        minPlayersSpinner=(Spinner) view.findViewById(R.id.organize_min_players_spinner);
+        minPlayersSpinner=(Spinner) view.findViewById(R.id.organize_min_players_spinner); //TODO id max<min set error on  spinner
         organizeViewModel.setOrganizeSpinner(minPlayersSpinner,R.array.players_number_array);
         minPlayersSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -124,7 +181,7 @@ public class OrganizeAddGameFragment extends Fragment {
         pitchSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.v(TAG,(adapterView.getItemAtPosition(i).toString()));
+                organizeViewModel.setPitchId(i);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -168,6 +225,14 @@ public class OrganizeAddGameFragment extends Fragment {
                 organizeViewModel.addGame();
             }
         });
+
+        descriptionEditText = (EditText) view.findViewById(R.id.organize_addGame_description_editText);
+        descriptionEditText.addTextChangedListener(addGameTextWatcher);
+
+        durationEditText = (EditText) view.findViewById(R.id.organize_addGame_duration_editText);
+        durationEditText.setText("90");
+        durationEditText.addTextChangedListener(addGameTextWatcher);
+
     }
 
 

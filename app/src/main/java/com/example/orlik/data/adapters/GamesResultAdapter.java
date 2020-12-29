@@ -11,11 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.orlik.R;
 import com.example.orlik.data.model.Game;
+import com.example.orlik.data.model.dto.GameDTO;
 
 import java.util.ArrayList;
 
 public class GamesResultAdapter extends RecyclerView.Adapter<GamesResultAdapter.ViewHolder> {
-    private ArrayList<Game> gamesSearchResult;
+    private ArrayList<GameDTO> gamesSearchResult;
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private final TextView pitchTypeTextView, addressTextView, membersTextView, dateTextView, organizerTextView;
@@ -81,7 +82,7 @@ public class GamesResultAdapter extends RecyclerView.Adapter<GamesResultAdapter.
         }
     }
 
-    public GamesResultAdapter(ArrayList<Game> dataSet) {
+    public GamesResultAdapter(ArrayList<GameDTO> dataSet) {
         gamesSearchResult = dataSet;
     }
 
@@ -95,11 +96,11 @@ public class GamesResultAdapter extends RecyclerView.Adapter<GamesResultAdapter.
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position){
         String members = gamesSearchResult.get(position).getPlayers()+"/"+gamesSearchResult.get(position).getMaxPlayersNumber();
-        viewHolder.getAddressTextView().setText("Adressssssssssssssssss");
+        viewHolder.getAddressTextView().setText(gamesSearchResult.get(position).getAddress());
         viewHolder.getDateTextView().setText(gamesSearchResult.get(position).getSchedule());
         viewHolder.getMembersTextView().setText(members);
         viewHolder.getOrganizerTextView().setText(gamesSearchResult.get(position).getOrganizerLogin());
-        viewHolder.getPitchTypeTextView().setText("Typ Boiska");
+        viewHolder.getPitchTypeTextView().setText(gamesSearchResult.get(position).getPitchType());
         if(position%2==0){
             viewHolder.setBackground(R.color.barBackground);
         }else{

@@ -4,6 +4,7 @@ import com.example.orlik.data.model.Friends;
 import com.example.orlik.data.model.Game;
 import com.example.orlik.data.model.Pitch;
 import com.example.orlik.data.model.User;
+import com.example.orlik.data.model.dto.GameDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +56,43 @@ public interface ServerAPI {
      */
     @GET("/pitch")
     Call<ArrayList<Pitch>> getPitch(
-            @Query("lon") double lat,
-            @Query("lat") double lon,
+            @Query("lat") double lat,
+            @Query("lon") double lon,
             @Query("range") int range
+    );
+
+
+    @POST("/pitch")
+    Call<Pitch> addPitch(
+            @Query("type") String type,
+            @Query("location") String location,
+            @Query("adress") String adress
+    );
+
+    /**
+     *
+     * @param maxPlayersNumber
+     * @param minPlayersNumber
+     * @param pitchId
+     * @param organiserLogin
+     * @param visibility
+     * @param schedule hh:mm yyyy-mm-dd
+     * @param description
+     * @param duration
+     * @param isOrganiserPlaying whether organiser want to play in this match or not
+     * @return added Game
+     */
+    @POST("/game/add")
+    Call<Game> addGame(
+            @Query("maxPlayersNumber") int maxPlayersNumber,
+            @Query("minPlayersNumber") int minPlayersNumber,
+            @Query("pitchId") int pitchId,
+            @Query("organiserLogin") String organiserLogin,
+            @Query("visibility") int visibility,
+            @Query("schedule") String schedule,
+            @Query("description") String description,
+            @Query("duration") Integer duration,
+            @Query("isOrganiserPlaying") Boolean isOrganiserPlaying
     );
 
     /**
@@ -69,7 +104,7 @@ public interface ServerAPI {
      * @return
      */
     @GET("/game/range")
-    Call<ArrayList<Game>> getGames(
+    Call<ArrayList<GameDTO>> getGames(
             @Query("lat") double lat,
             @Query("lon") double lon,
             @Query("range") int range,
@@ -82,7 +117,7 @@ public interface ServerAPI {
      * @return
      */
     @GET("/game/login")
-    Call<ArrayList<Game>> getGamesByOrganiserLogin(
+    Call<ArrayList<GameDTO>> getGamesByOrganiserLogin(
             @Query("organiserLogin") String organiserLogin
     );
 
@@ -92,7 +127,7 @@ public interface ServerAPI {
      * @return
      */
     @GET("/game/login")
-    Call<ArrayList<Game>> getGamesByPlayerLogin(
+    Call<ArrayList<GameDTO>> getGamesByPlayerLogin(
             @Query("playerLogin") String playerLogin
     );
 

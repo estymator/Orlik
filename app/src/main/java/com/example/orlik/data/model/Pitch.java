@@ -59,4 +59,16 @@ public class Pitch {
         this.rating = rating;
         this.valid=valid;
     }
+
+    @Override
+    public String toString() {
+        return "Pitch{" +
+                "pitchId=" + pitchId +
+                ", type='" + type + '\'' +
+                ", location='" + location + '\'' +
+                ", adress='" + adress + '\'' +
+                ", rating=" + rating +
+                ", valid=" + valid +
+                '}';
+    }
 }
