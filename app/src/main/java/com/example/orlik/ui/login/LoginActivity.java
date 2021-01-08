@@ -89,6 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                     try{
                         sesja.setCredentials(user.getLogin(),loginResult.getPassword());
                         sesja.setUser(user);
+                        sesja.setRole(loginResult.getRole());
                     }catch(Exception e)
                     {
                         Log.v(TAG,"Błąd zapisu danych logowania do sesji");
@@ -97,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
 
                     updateUiWithUser(loginResult.getSuccess());
                     setResult(Activity.RESULT_OK);
-                    Log.v(TAG,"Before finish()");
                     //Complete and destroy login activity once successful
                     finish();
                 }

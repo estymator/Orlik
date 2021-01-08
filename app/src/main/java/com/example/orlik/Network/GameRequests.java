@@ -20,6 +20,9 @@ public class GameRequests {
     private ServerAPI serverAPI;
     private MutableLiveData<ArrayList<GameDTO>> gamesList, organisedGames, attendGames;
     private MutableLiveData<Game> addGameResult;
+    private MutableLiveData<ArrayList<GameDTO>> getCheckedGamesResult, getAddStatsGameResult;
+    private MutableLiveData<GameDTO> addResult;
+    private MutableLiveData<Boolean> deleteGameResult;
 
     public void loadGames(double lat, double lon, int range, String type, MutableLiveData<ArrayList<GameDTO>> gamesList){
         this.gamesList=gamesList;
@@ -121,6 +124,7 @@ public class GameRequests {
     }
 
     private void getOrganizedGamesFailure(String mess){
+        this.organisedGames.setValue(new ArrayList<GameDTO>());
         Log.v(TAG, mess);
     }
 
@@ -159,7 +163,7 @@ public class GameRequests {
                 @Override
                 public void onFailure(Call<ArrayList<GameDTO>> call, Throwable t) {
                     Log.v(TAG,"onFailure");
-                    getGamesFailure(t.getMessage());
+                    getAttendGamesFailure(t.getMessage());
                 }
             });
 
@@ -174,6 +178,7 @@ public class GameRequests {
     }
 
     private void getAttendGamesFailure(String mess){
+        this.attendGames.setValue(new ArrayList<GameDTO>());
         Log.v(TAG, mess);
     }
 
@@ -228,5 +233,217 @@ public class GameRequests {
 
     private void addGameFailure(String mess){
         Log.v(TAG, mess);
+
+    }
+
+    public void loadCheckedGames(String login, MutableLiveData<ArrayList<GameDTO>> checkedGames){
+        this.getCheckedGamesResult=checkedGames;
+        serverAPI = RetrofitServiceGenerator.createService(ServerAPI.class);
+        try{
+            Call<ArrayList<GameDTO>> getCheckedGamesCall = serverAPI.getGamesChecked(login);
+            getCheckedGamesCall.enqueue(new Callback<ArrayList<GameDTO>>(){
+                @Override
+                public void onResponse(Call<ArrayList<GameDTO>> call, Response<ArrayList<GameDTO>> response) {
+                    if(response.isSuccessful()){
+                        if(response.body()!=null) {
+                            ArrayList<GameDTO> result= new ArrayList();
+                            try{
+                                result =(ArrayList<GameDTO>) response.body();
+                            }catch (Throwable t){
+                                getCheckedGamesFailure(t.getMessage());
+                            }
+                            getCheckedGamesSuccess(result);
+                        }else
+                        {
+                            getCheckedGamesFailure("Bład pobrania danych");
+                        }
+                    }else{
+                        Log.v(TAG,"ResponseSuccessful not 200");
+                        Gson gson = new Gson();
+                        NetworkError errorBody = gson.fromJson(response.errorBody().charStream(), NetworkError.class);
+                        String message = errorBody.getMessage();
+                        Log.v(TAG,message);
+                        getCheckedGamesFailure(message);
+                    }
+                }
+                @Override
+                public void onFailure(Call<ArrayList<GameDTO>> call, Throwable t) {
+                    Log.v(TAG,"onFailure");
+                    getCheckedGamesFailure(t.getMessage());
+                }
+            });
+
+        }catch (Exception e)
+        {
+            getOrganizedGamesFailure(e.getMessage());
+        }
+    }
+
+    private void getCheckedGamesSuccess(ArrayList<GameDTO> result){
+        this.getCheckedGamesResult.setValue(result);
+    }
+
+    private void getCheckedGamesFailure(String mess){
+        this.getCheckedGamesResult.setValue(new ArrayList<GameDTO>());
+        Log.v(TAG, mess);
+    }
+
+
+    public void loadFinishedGames(String login, MutableLiveData<ArrayList<GameDTO>> addStatsGameResult){
+        this.getAddStatsGameResult=addStatsGameResult;
+        serverAPI = RetrofitServiceGenerator.createService(ServerAPI.class);
+        try{
+            Call<ArrayList<GameDTO>> getFinishedGamesCall = serverAPI.getfinischedGames(login);
+            getFinishedGamesCall.enqueue(new Callback<ArrayList<GameDTO>>(){
+                @Override
+                public void onResponse(Call<ArrayList<GameDTO>> call, Response<ArrayList<GameDTO>> response) {
+                    if(response.isSuccessful()){
+                        if(response.body()!=null) {
+                            ArrayList<GameDTO> result= new ArrayList();
+                            try{
+                                result =(ArrayList<GameDTO>) response.body();
+                            }catch (Throwable t){
+                                getFinishedGamesFailure(t.getMessage());
+                            }
+                            getFinishedGamesSuccess(result);
+                        }else
+                        {
+                            getFinishedGamesFailure("Bład pobrania danych");
+                        }
+                    }else{
+                        Log.v(TAG,"ResponseSuccessful not 200");
+                        Gson gson = new Gson();
+                        NetworkError errorBody = gson.fromJson(response.errorBody().charStream(), NetworkError.class);
+                        String message = errorBody.getMessage();
+                        Log.v(TAG,message);
+                        getFinishedGamesFailure(message);
+                    }
+                }
+                @Override
+                public void onFailure(Call<ArrayList<GameDTO>> call, Throwable t) {
+                    Log.v(TAG,"onFailure");
+                    getFinishedGamesFailure(t.getMessage());
+                }
+            });
+
+        }catch (Exception e)
+        {
+            getFinishedGamesFailure(e.getMessage());
+        }
+    }
+
+    private void getFinishedGamesSuccess(ArrayList<GameDTO> result){
+        this.getAddStatsGameResult.setValue(result);
+    }
+
+    private void getFinishedGamesFailure(String mess){
+        this.getAddStatsGameResult.setValue(new ArrayList<GameDTO>());
+        Log.v(TAG, mess);
+    }
+
+    public void deleteGame(int gameId, String login, MutableLiveData<Boolean> deleteGameResult){
+        this.deleteGameResult=deleteGameResult;
+        serverAPI = RetrofitServiceGenerator.createService(ServerAPI.class);
+        try{
+            Call<Boolean> deleteGameCall = serverAPI.deleteGame(login, gameId);
+
+            deleteGameCall.enqueue(new Callback<Boolean>(){
+                @Override
+                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                    if(response.isSuccessful()){
+                        if(response.body()!=null) {
+                            Boolean result= new Boolean(false);
+                            try{
+                                result =(Boolean) response.body();
+                            }catch (Throwable t){
+                                deleteGameFailure(t.getMessage());
+                            }
+                            deleteGameSuccess(result);
+                        }else
+                        {
+                            addGameFailure("Bład pobrania danych");
+                        }
+                    }else{
+                        Log.v(TAG,"ResponseSuccessful not 200");
+                        Gson gson = new Gson();
+                        NetworkError errorBody = gson.fromJson(response.errorBody().charStream(), NetworkError.class);
+                        String message = errorBody.getMessage();
+                        Log.v(TAG,message);
+                        deleteGameFailure(message);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Boolean> call, Throwable t) {
+                    deleteGameFailure(t.getMessage());
+                }
+            });
+
+        }catch (Exception e)
+        {
+            deleteGameFailure(e.getMessage());
+        }
+    }
+
+    private void deleteGameSuccess(Boolean result){
+        this.deleteGameResult.setValue(result);
+    }
+
+    private void deleteGameFailure(String mess){
+        Log.v(TAG,mess);
+        this.deleteGameResult.setValue(new Boolean(false));
+    }
+
+    public void addResultToGame(int gameId, String result, MutableLiveData<GameDTO> addResult){
+        this.addResult=addResult;
+        serverAPI = RetrofitServiceGenerator.createService(ServerAPI.class);
+        try{
+            Call<GameDTO> addResultCall = serverAPI.addResult(gameId, result);
+
+            addResultCall.enqueue(new Callback<GameDTO>(){
+                @Override
+                public void onResponse(Call<GameDTO> call, Response<GameDTO> response) {
+                    if(response.isSuccessful()){
+                        if(response.body()!=null) {
+                            GameDTO result= new GameDTO();
+                            try{
+                                result =(GameDTO) response.body();
+                            }catch (Throwable t){
+                                addResultFailure(t.getMessage());
+                            }
+                            addResultSuccess(result);
+                        }else
+                        {
+                            addResultFailure("Bład pobrania danych");
+                        }
+                    }else{
+                        Log.v(TAG,"ResponseSuccessful not 200");
+                        Gson gson = new Gson();
+                        NetworkError errorBody = gson.fromJson(response.errorBody().charStream(), NetworkError.class);
+                        String message = errorBody.getMessage();
+                        Log.v(TAG,message);
+                        addResultFailure(message);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<GameDTO> call, Throwable t) {
+                    addResultFailure(t.getMessage());
+                }
+            });
+
+        }catch (Exception e)
+        {
+            addResultFailure(e.getMessage());
+        }
+    }
+
+    private void addResultSuccess(GameDTO result){
+        this.addResult.setValue(result);
+    }
+
+    private void addResultFailure(String mess){
+        Log.v(TAG,mess);
+        this.addResult.setValue(null);
     }
 }

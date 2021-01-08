@@ -47,8 +47,8 @@ import java.util.TimeZone;
 public class OrganizeAddGameFragment extends Fragment {
     private static final String TAG = "OrganizeAddGameFragment";
     private OrganizeViewModel organizeViewModel;
-    private Spinner maxPlayersSpinner, minPlayersSpinner, visibilitySpinner, pitchSpinner;
-    private TextView gameDate, gameTime;
+    private Spinner maxPlayersSpinner, minPlayersSpinner, visibilitySpinner, pitchSpinner, pitchRangeSpinner;
+    private TextView gameDate, gameTime, minPlayersTextView;
     private EditText descriptionEditText, durationEditText;
     private CheckBox isOrganizerPlaying;
     Button addGameButton;
@@ -65,19 +65,19 @@ public class OrganizeAddGameFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v(TAG, "onCreate");
+        setStartDate();
         organizeViewModel = new ViewModelProvider(requireActivity(), new OrganizeViewModelFactory())
                 .get(OrganizeViewModel.class);
-        date = Calendar.getInstance();
-        day=date.get(Calendar.DAY_OF_MONTH);
-        month=date.get(Calendar.MONTH);
-        year=date.get(Calendar.YEAR);
-        hour=(date.get(Calendar.HOUR_OF_DAY)==24)? 00:(date.get(Calendar.HOUR)+1);
         organizeViewModel.getAddGameResult().setValue(null);
         organizeViewModel.getAddGameResult().observe(this, new Observer<Game>() {
             @Override
             public void onChanged(Game game) {
                 if(game!=null){
-                    Toast.makeText(requireContext(),"Dodano Mecz", Toast.LENGTH_LONG).show();
+
+                    Toast ToastMessage = Toast.makeText(requireContext(),"Dodano Mecz",Toast.LENGTH_SHORT);
+                    View toastView = ToastMessage.getView();
+                    toastView.setBackgroundColor(getResources().getColor(R.color.toastBackground));
+                    ToastMessage.show();
                     getParentFragmentManager().popBackStack();
                 }
             }
@@ -98,7 +98,9 @@ public class OrganizeAddGameFragment extends Fragment {
             public void afterTextChanged(Editable editable) {
                 String desc=descriptionEditText.getText().toString();
                 String duration = durationEditText.getText().toString();
-                organizeViewModel.addGameFormDataChanged(desc, duration);
+                organizeViewModel.setDescription(desc);
+                organizeViewModel.setDuration(Integer.parseInt(duration));
+                organizeViewModel.addGameFormDataChanged();
             }
         };
 
@@ -106,11 +108,16 @@ public class OrganizeAddGameFragment extends Fragment {
             @Override
             public void onChanged(AddGameFormState addGameFormState) {
                 addGameButton.setEnabled(addGameFormState.getDataValid());
-                if(addGameFormState.getDescriptionError()){
+                if(addGameFormState.getPlayersNumberError()){
+                    minPlayersTextView.setError("Min>Max");
+                }else if(addGameFormState.getDescriptionError()){
+                    minPlayersTextView.setError(null);
                     descriptionEditText.setError("Max 30 znaków");
                 }else if(addGameFormState.getDurationError()){
+                    minPlayersTextView.setError(null);
                     durationEditText.setError("Błędne dane");
                 }else{
+                    minPlayersTextView.setError(null);
                     organizeViewModel.setDuration(Integer.valueOf(durationEditText.getText().toString()));
                     organizeViewModel.setDescription(descriptionEditText.getText().toString());
                 }
@@ -129,12 +136,15 @@ public class OrganizeAddGameFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
+        minPlayersTextView = (TextView) view.findViewById(R.id.organize_min_players_TextView);
+
         maxPlayersSpinner=(Spinner) view.findViewById(R.id.organize_max_players_spinner);
         organizeViewModel.setOrganizeSpinner(maxPlayersSpinner,R.array.players_number_array);
         maxPlayersSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 organizeViewModel.setMaxPlayersNumber(Integer.valueOf(adapterView.getItemAtPosition(i).toString()));
+                organizeViewModel.addGameFormDataChanged();
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -148,6 +158,7 @@ public class OrganizeAddGameFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 organizeViewModel.setMinPlayersNumber(Integer.valueOf(adapterView.getItemAtPosition(i).toString()));
+                organizeViewModel.addGameFormDataChanged();
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -162,6 +173,22 @@ public class OrganizeAddGameFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 organizeViewModel.setVisibility(adapterView.getItemAtPosition(i).toString());
             }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        pitchRangeSpinner = view.findViewById(R.id.organize_pitchRange_spinner);
+        organizeViewModel.setOrganizeSpinner(pitchRangeSpinner, R.array.distance_array);
+        pitchRangeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                int[] arrayList ={5,10,20,40};
+                organizeViewModel.setPitchRange(arrayList[i]);
+                organizeViewModel.requestPitchList();
+            }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -191,7 +218,15 @@ public class OrganizeAddGameFragment extends Fragment {
         organizeViewModel.requestPitchList();
 
         gameDate = (TextView) view.findViewById(R.id.organize_gameDate_TextView);
-        gameDate.setText((day+"/"+month+"/"+year));
+        String dayS=day+"", monthS=month+"";
+        if(day<10){
+            dayS="0"+day;
+        }
+        if(month<10){
+            monthS="0"+month;
+        }
+        gameDate.setText((dayS+"/"+monthS+"/"+year));
+        organizeViewModel.setGameDate(dayS+"/"+monthS+"/"+year);
         gameDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -200,8 +235,9 @@ public class OrganizeAddGameFragment extends Fragment {
             }
         });
 
-        gameTime = (TextView) view.findViewById(R.id.organize_gameTime_TextView);
+        gameTime = (TextView) view.findViewById(R.id.organize_gameTime_TextView); //TODO prevent same day on earlier hour than current
         gameTime.setText((hour+":00"));
+        organizeViewModel.setGameTime(hour+":00");
         gameTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -235,5 +271,13 @@ public class OrganizeAddGameFragment extends Fragment {
 
     }
 
+    private void setStartDate(){
+        date = Calendar.getInstance();
+        day=date.get(Calendar.DAY_OF_MONTH);
+        month=date.get(Calendar.MONTH);
+        month=month+1;
+        year=date.get(Calendar.YEAR);
+        hour=(date.get(Calendar.HOUR_OF_DAY)==24)? 00:(date.get(Calendar.HOUR_OF_DAY)+2);
+    }
 
 }

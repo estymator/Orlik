@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.orlik.R;
+import com.example.orlik.data.model.User;
 import com.example.orlik.ui.Basic.BasicActivity;
 import com.example.orlik.ui.organizeGames.fragments.OrganizeAddGameFragment;
 import com.example.orlik.ui.organizeGames.fragments.OrganizeAddPitchFragment;
+import com.example.orlik.ui.organizeGames.fragments.OrganizeInvalidPitchListFragment;
 import com.example.orlik.ui.organizeGames.fragments.OrganizeMenuFragment;
+import com.example.orlik.ui.organizeGames.fragments.OrganizePitchListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class OrganizeActivity extends BasicActivity {
@@ -24,18 +27,29 @@ public class OrganizeActivity extends BasicActivity {
         organizeViewModel= new ViewModelProvider(this, new OrganizeViewModelFactory())
                 .get(OrganizeViewModel.class);
         organizeViewModel.setContext(this);
+        int pitchId =(int) getIntent().getIntExtra("pitch", 0);
 
         setContentView(R.layout.activity_organize);
         bottomNavigationView = findViewById(R.id.main_toolbar);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);// get handlers from parent app
         bottomNavigationView.setOnNavigationItemReselectedListener(this);
-        bottomNavigationView.setSelectedItemId(R.id.menu_item_organize);
+        bottomNavigationView.setSelectedItemId(R.id.menu_item_add); //TODO check if this line is neccessary
+        checkAdmin(bottomNavigationView);
 
         if(savedInstanceState ==null){
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.organize_fragment_container_view, OrganizeMenuFragment.class , null)
-                    .commit();
+            if(pitchId>0){
+                getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .add(R.id.organize_fragment_container_view, OrganizeAddGameFragment.class , null)
+                        .commit();
+            }else{
+                getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .add(R.id.organize_fragment_container_view, OrganizeMenuFragment.class , null)
+                        .commit();
+            }
+
 
         }
 
@@ -50,13 +64,27 @@ public class OrganizeActivity extends BasicActivity {
                                 .replace(R.id.organize_fragment_container_view, OrganizeAddGameFragment.class , null)
                                 .commit();
                         break;
-                    case "pitch":
+                    case "addPitch":
                         getSupportFragmentManager().beginTransaction()
                                 .setReorderingAllowed(true)
                                 .addToBackStack(null)
                                 .replace(R.id.organize_fragment_container_view, OrganizeAddPitchFragment.class , null)
                                 .commit();
                         break;
+                    case "pitch":
+                        getSupportFragmentManager().beginTransaction()
+                                .setReorderingAllowed(true)
+                                .addToBackStack(null)
+                                .replace(R.id.organize_fragment_container_view, OrganizePitchListFragment.class , null)
+                                .commit();
+                        break;
+                case "invalidPitch":
+                    getSupportFragmentManager().beginTransaction()
+                            .setReorderingAllowed(true)
+                            .addToBackStack(null)
+                            .replace(R.id.organize_fragment_container_view, OrganizeInvalidPitchListFragment.class , null)
+                            .commit();
+                    break;
                 }
             }
         });

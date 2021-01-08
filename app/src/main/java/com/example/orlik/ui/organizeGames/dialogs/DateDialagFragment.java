@@ -33,6 +33,7 @@ public class DateDialagFragment extends DialogFragment implements DatePickerDial
         int day = c.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),R.style.my_dialog_theme,this, year,month,day);
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
 
         return datePickerDialog;
     }
@@ -41,7 +42,15 @@ public class DateDialagFragment extends DialogFragment implements DatePickerDial
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         TextView dateTextView = getActivity().findViewById(R.id.organize_gameDate_TextView);
-        String gameDate=day+"/"+(month+1)+"/"+year;
+        month=month+1;
+        String dayS=day+"", monthS=month+"";
+        if(day<10){
+            dayS="0"+day;
+        }
+        if(month<10){
+            monthS="0"+month;
+        }
+        String gameDate=dayS+"/"+monthS+"/"+year;
         dateTextView.setText(gameDate);
         organizeViewModel.setGameDate(gameDate);
     }

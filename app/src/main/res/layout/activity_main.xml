@@ -30,6 +30,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/names_textView"
         android:padding="5dp"
         android:layout_margin="@dimen/basic_margin"
         />
@@ -83,8 +84,33 @@
         android:layout_margin="@dimen/basic_margin"
         android:layout_below="@id/main_won_TextView"
         />
+    <TextView
+        android:id="@+id/main_notifications_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/barBackground"
+        android:textColor="@color/textColorPrimary"
+        android:text="Powiadomienia"
+        android:layout_marginTop="@dimen/basic_margin"
+        android:layout_below="@id/main_trustRate_TextView"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/main_notifications_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_notifications_textView"/>
 
     <TextView
+        android:id="@+id/main_emptyNotifications_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Brak powiadomień"
+        android:textColor="@color/textColorPrimary"
+        android:layout_marginLeft="@dimen/basic_margin"
+        android:visibility="gone"
+        android:layout_below="@id/main_notifications_recyclerView"
+        />
+<TextView
         android:id="@+id/main_friends_TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -92,7 +118,7 @@
         android:textColor="@color/textColorPrimary"
         android:text="@string/main_friends_textView"
         android:layout_marginTop="@dimen/basic_margin"
-        android:layout_below="@id/main_trustRate_TextView"
+        android:layout_below="@id/main_emptyNotifications_textView"
         />
     <RelativeLayout
         android:id="@+id/main_friends_relativeLayout"
@@ -125,7 +151,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/barBackground"
-        android:layout_marginBottom="@dimen/basic_margin"
         android:layout_below="@id/main_friends_relativeLayout"
         android:text="@string/profile_gameOrganized_textView"
         android:textColor="@color/textColorPrimary" />
@@ -142,9 +167,8 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/main_organizedGames_recycylerView"
-                    android:layout_margin="@dimen/basic_margin"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     />
 
             </androidx.core.widget.NestedScrollView>
@@ -156,7 +180,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/barBackground"
-            android:layout_marginBottom="@dimen/basic_margin"
             android:layout_below="@id/main_organizedGames_relativeLayout"
             android:text="@string/profile_gameAttend_textView"
             android:textColor="@color/textColorPrimary"
@@ -174,7 +197,6 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/main_attendGames_recycylerView"
-                    android:layout_margin="@dimen/basic_margin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/profile_attendGames_textView"
@@ -192,7 +214,6 @@
         android:background="@color/barBackground"
         android:textColor="@color/textColorPrimary"
         android:text="@string/main_searchFriends_textView"
-        android:layout_marginTop="@dimen/basic_margin"
         android:layout_below="@id/main_attendGames_relativeLayout"
         />
 
@@ -222,8 +243,7 @@
         <androidx.core.widget.NestedScrollView
             android:id="@+id/main_searchUsers_scrollView"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -237,20 +257,17 @@
 
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
+
     <Button
         android:id="@+id/main_logout_button"
         android:layout_margin="@dimen/basic_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/basic_margin"
         android:text="@string/logout_button"
-        android:layout_below="@id/main_searchUsers_linearLayout"/>
-    <Button
-        android:id="@+id/main_list_users_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="Pokaz liste uzytkownikow"
-        android:layout_below="@id/main_logout_button"/>
+        android:layout_below="@id/main_searchUsers_linearLayout"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
 
     </RelativeLayout>
     </ScrollView>

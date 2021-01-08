@@ -28,10 +28,10 @@ public class TimeDialogFragment extends DialogFragment implements TimePickerDial
         final Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Poland"));
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
-
-        // Create a new instance of TimePickerDialog and return it
-        return new TimePickerDialog(getActivity(), R.style.my_dialog_theme,this, hour, minute,
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), R.style.my_dialog_theme,this, hour, minute,
                 DateFormat.is24HourFormat(getActivity()));
+        return timePickerDialog;
+
 
     }
 
@@ -39,10 +39,15 @@ public class TimeDialogFragment extends DialogFragment implements TimePickerDial
     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
         TextView timeTextView = getActivity().findViewById(R.id.organize_gameTime_TextView);
         String gameTime;
+        String minutesS =String.valueOf(minutes);
+        if(minutes<10)
+        {
+            minutesS="0"+minutes;
+        }
         if(hourOfDay<10){
-           gameTime="0"+hourOfDay+":"+minutes;
+           gameTime="0"+hourOfDay+":"+minutesS;
         }else{
-           gameTime = hourOfDay+":"+minutes;
+           gameTime = hourOfDay+":"+minutesS;
         }
         timeTextView.setText(gameTime);
         organizeViewModel.setGameTime(gameTime);

@@ -9,7 +9,9 @@ import com.example.orlik.Network.ServerAPI;
 
 import com.example.orlik.data.model.Session;
 import com.example.orlik.data.model.User;
+import com.example.orlik.data.model.dto.UserDTO;
 
+import java.io.Console;
 import java.io.IOException;
 import java.net.UnknownServiceException;
 
@@ -30,23 +32,26 @@ public class LoginDataSource {
 
         try {
 
-            Call<User> loginCall= serverAPI.loginUser(username, password);
-            loginCall.enqueue(new Callback<User>() {
+            Call<UserDTO> loginCall= serverAPI.loginUser(username, password);
+            loginCall.enqueue(new Callback<UserDTO>() {
                 @Override
-                public void onResponse(Call<User> call, Response<User> response) {
+                public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
 
                    if(response.isSuccessful())
                    {
 
                        if(response.body().getLogin()!=null) {
+                            String role=response.body().getRole();
+                           Log.v(TAG, role);
                            User loggedInUser = new User(response.body().getTotalGames(),
                                    response.body().getWinGames(),
                                    response.body().getLogin(),
                                    response.body().getName(),
                                    response.body().getSurname(),
-                                   response.body().getTrustRate());
+                                   response.body().getTrustRate(),
+                                   response.body().isValid());
                             RetrofitServiceGenerator.setCredentials(username,password);
-                           loginSuccessfull(loggedInUser, password);
+                           loginSuccessfull(loggedInUser, password, role);
                        }else
                        {
                            loginFailed("Blędne dane logowania");
@@ -59,7 +64,7 @@ public class LoginDataSource {
                 }
 
                 @Override
-                public void onFailure(Call<User> call, Throwable t) {
+                public void onFailure(Call<UserDTO> call, Throwable t) {
 
                     loginFailed(t.getMessage());
                     
@@ -76,13 +81,11 @@ public class LoginDataSource {
         // TODO: revoke authentication
     }
 
-    private void loginSuccessfull(User loggedInUser, String password)
+    private void loginSuccessfull(User loggedInUser, String password, String role)
     {
-
-
         if(this.loginResultMutableLiveData!=null)
         {
-            this.loginResultMutableLiveData.setValue(new LoginResult(loggedInUser, password));
+            this.loginResultMutableLiveData.setValue(new LoginResult(loggedInUser, password, role));
         }
     }
 

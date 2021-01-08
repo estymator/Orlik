@@ -32,10 +32,6 @@
 
     <!--    Strings from main activity-->
     <string name="logout_button">Wyloguj</string>
-    <string name="menu_item_profile">Profil</string>
-    <string name="menu_item_games">Mecze</string>
-    <string name="menu_item_settings">Ustawienia</string>
-    <string name="menu_item_organize">Stwórz</string>
     <string name="main_friends_textView">Znajomi: </string>
     <string name="main_searchButton_hint">Login lub imie </string>
     <string name="main_searchFriends_textView">Szukaj użytkownikow: </string>
@@ -52,10 +48,12 @@
     <string name="games_range_TextView">Maksymalana odległość</string>
 
     <!--    Strings for organizeGames-->
-    <string name="title_activity_organizeGames">Zaplanuj mecz</string>
+    <string name="title_activity_organizeGames">Dodaj</string>
     <string name="organize_max_prompt">Maksymalna liczba graczy</string>
     <string name="organize_min_prompt">Minimalna liczba graczy</string>
     <string name="organize_match_button">Dodaj Mecz</string>
+    <string name="organize_showPitch_button">Pokaż boiska w okolicy</string>
+    <string name="organize_showInvalidPitch">Pokaż boiska oczekujące na dodanie</string>
     <string name="organize_pitch_button">Dodaj Boisko</string>
     <string name="organize_city_prompt">Miejscowość</string>
     <string name="organize_pitch_prompt">Wybierz boisko</string>
@@ -70,7 +68,7 @@
     <string name="organize_addPitch_addPitchButton">Dodaj Boisko</string>
 
     <!--    Strings for settingsActivity-->
-    <string name="title_activity_settings">Ustawienia</string>
+    <string name="title_activity_settings">Statystyki</string>
 
     <!--    Strings for profileActivity-->
     <string name="profile_deleteFriend_button">Usuń ze znajomych</string>
@@ -93,7 +91,26 @@
     <string name="games_result_pitchType_hint">Typ Boiska</string>
     <string name="games_result_pitchRate_hint">Ocena Boiska</string>
     <string name="games_result_membersLogin_hint">Uczestnicy</string>
-    <string name="games_result_mapButton_hint">Zobacz na mapie</string>
+    <string name="games_result_getMatchButton_hint">Pokaż Mecz</string>
     <string name="games_result_status_hint">Status Boiska</string>
-    <string name="games_result_signUpButton_hint">Dołącz</string>
+
+    <!--    String for PitchResultFragments-->
+    <string name="pitchItem_details_button">Pokaż</string>
+
+    <!--    String for pitchActivity-->
+    <string name="pitch_confirm_button">Potwierdz lokalizacje</string>
+
+    <!--    Strings for menu icon-->
+    <string name="menu_icon_home">Profil</string>
+    <string name="menu_icon_search">Szukaj</string>
+    <string name="menu_icon_add">Dodaj</string>
+    <string name="menu_icon_stats">Statystyki</string>
+    <string name="menu_icon_admin">Admin</string>
+
+    <!--    Strings for admin-->
+    <string name="title_activity_admin">Administrator</string>
+    <string name="admin_search_button">Szukaj</string>
+    <string name="admin_search_user_hint">Szukaj Uzytkowników</string>
+    <string name="admin_search_pitch_hint">Szukaj Boisk</string>
+
 </resources>

@@ -1,9 +1,11 @@
 package com.example.orlik.data.model;
 
-public class Pitch {
+import java.io.Serializable;
+
+public class Pitch implements Serializable {
     private Integer pitchId;
     private String type, location, adress;
-    private Integer rating;
+    private double rating;
     private boolean valid;
 
     public Integer getPitchId() {
@@ -34,11 +36,11 @@ public class Pitch {
         this.adress = adress;
     }
 
-    public Integer getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
@@ -52,7 +54,7 @@ public class Pitch {
 
     public Pitch(){};
 
-    public Pitch(String type, String location, String adress, Integer rating,boolean valid) {
+    public Pitch(String type, String location, String adress, double rating,boolean valid) {
         this.type = type;
         this.location = location;
         this.adress = adress;

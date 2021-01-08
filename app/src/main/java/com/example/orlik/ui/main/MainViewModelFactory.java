@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
  * ViewModel provider factory to instantiate MainViewModel.
  * Required given MainViewModel has a non-empty constructor
  */
-public class MainViewModelFactory  implements ViewModelProvider.Factory{
+public class MainViewModelFactory implements ViewModelProvider.Factory{
     @NonNull
     @Override
     @SuppressWarnings("unchecked")

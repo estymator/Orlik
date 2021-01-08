@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder>  {
     private ArrayList<User> users;
-    private boolean isFriend;
+    private boolean isFriend; //TODO get this info from server
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder{

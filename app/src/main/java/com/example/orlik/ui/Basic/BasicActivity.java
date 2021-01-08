@@ -11,16 +11,16 @@ import android.view.MenuItem;
 import com.example.orlik.Network.RetrofitServiceGenerator;
 import com.example.orlik.R;
 import com.example.orlik.data.model.Session;
+import com.example.orlik.ui.admin.AdminActivity;
 import com.example.orlik.ui.games.GamesActivity;
 import com.example.orlik.ui.login.LoginActivity;
 import com.example.orlik.ui.main.MainActivity;
 import com.example.orlik.ui.organizeGames.OrganizeActivity;
-import com.example.orlik.ui.settings.SettingsActivity;
+import com.example.orlik.ui.stats.SettingsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class BasicActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemReselectedListener{
     private final String TAG="BasicActivity";
-
     private Session session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,21 +90,21 @@ public class BasicActivity extends AppCompatActivity implements BottomNavigation
         switch (item.getItemId()){
             case R.id.menu_item_profile:
                 if(this instanceof MainActivity) return true;
-                Log.v(TAG,"main");
+                Log.v(TAG,"home");
                 intent= new Intent(this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 return true;
 
-            case R.id.menu_item_settings:
+            case R.id.menu_item_stats:
                 if(this instanceof SettingsActivity) return true;
-                Log.v(TAG,"ustawienia");
+                Log.v(TAG,"statystyki");
                 intent= new Intent(this, SettingsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 return true;
 
-            case R.id.menu_item_organize:
+            case R.id.menu_item_add:
                 if(this instanceof OrganizeActivity) return true;
                 Log.v(TAG,"stwórz");
                 intent= new Intent(this, OrganizeActivity.class);
@@ -112,10 +112,18 @@ public class BasicActivity extends AppCompatActivity implements BottomNavigation
                 startActivity(intent);
                 return true;
 
-            case R.id.menu_item_games:
+            case R.id.menu_item_search:
                 if(this instanceof GamesActivity) return true;
                 Log.v(TAG,"GRY");
                 intent= new Intent(this, GamesActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+
+            case R.id.menu_item_admin:
+                if(this instanceof AdminActivity) return true;
+                Log.v(TAG,"ADMIN");
+                intent= new Intent(this, AdminActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 return true;
@@ -137,7 +145,7 @@ public class BasicActivity extends AppCompatActivity implements BottomNavigation
                 startActivity(intent);
                 break;
 
-            case R.id.menu_item_settings:
+            case R.id.menu_item_stats:
                 if(this instanceof SettingsActivity) break;
                 Log.v(TAG,"ustawienia");
                 intent= new Intent(this, SettingsActivity.class);
@@ -145,7 +153,7 @@ public class BasicActivity extends AppCompatActivity implements BottomNavigation
                 startActivity(intent);
                 break;
 
-            case R.id.menu_item_organize:
+            case R.id.menu_item_add:
                 if(this instanceof OrganizeActivity) break;
                 Log.v(TAG,"stwórz");
                 intent= new Intent(this, OrganizeActivity.class);
@@ -153,15 +161,33 @@ public class BasicActivity extends AppCompatActivity implements BottomNavigation
                 startActivity(intent);
                 break;
 
-            case R.id.menu_item_games:
+            case R.id.menu_item_search:
                 if(this instanceof GamesActivity) break;
                 Log.v(TAG,"GRY");
                 intent= new Intent(this, GamesActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
+
+            case R.id.menu_item_admin:
+                if(this instanceof AdminActivity) break;
+                Log.v(TAG,"GRY");
+                intent= new Intent(this, AdminActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
         }
         Log.v(TAG,"Reselect");
+    }
+
+    protected void checkAdmin(BottomNavigationView bottomNavigationView){
+        session = new Session(getApplicationContext());
+        if(session.getRole()!=null&&session.getRole().equals("ROLE_ADMIN")){
+            Log.v(TAG, "ZMIANA NA ADMINA");
+            bottomNavigationView.getMenu().getItem(4).setVisible(true);
+        }else{
+            bottomNavigationView.getMenu().getItem(4).setVisible(false);
+        }
     }
 
 }

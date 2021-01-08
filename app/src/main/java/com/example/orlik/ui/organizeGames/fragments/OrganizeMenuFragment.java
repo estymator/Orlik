@@ -24,7 +24,7 @@ import com.example.orlik.ui.organizeGames.OrganizeViewModelFactory;
 public class OrganizeMenuFragment extends Fragment {
     private static final String TAG="OrganizeMenuFragmentTAG";
     private OrganizeViewModel organizeViewModel;
-    private Button addGameButton, addPitchButton;
+    private Button addGameButton, addPitchButton, showPitchButton, showInvalidPitch;
 
     public OrganizeMenuFragment() {
         // Required empty public constructor
@@ -45,11 +45,13 @@ public class OrganizeMenuFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){ //TODO add load icon everywhere(like in login)
         super.onViewCreated(view, savedInstanceState);
 
         addGameButton = (Button) view.findViewById(R.id.organize_menu_addGameButton);
         addPitchButton = (Button) view.findViewById(R.id.organize_menu_addPitchButton);
+        showPitchButton = (Button) view.findViewById(R.id.organize_menu_showPitchButton);
+        showInvalidPitch = (Button) view.findViewById(R.id.organize_menu_showInvalidPitchButton);
 
         addGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +63,21 @@ public class OrganizeMenuFragment extends Fragment {
         addPitchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                organizeViewModel.getFragmentNavigator().setValue("addPitch");
+            }
+        });
+
+        showPitchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 organizeViewModel.getFragmentNavigator().setValue("pitch");
+            }
+        });
+
+        showInvalidPitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                organizeViewModel.getFragmentNavigator().setValue("invalidPitch");
             }
         });
     }

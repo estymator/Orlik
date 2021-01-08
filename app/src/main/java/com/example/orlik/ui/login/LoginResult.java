@@ -13,15 +13,18 @@ class LoginResult {
     @Nullable
     private String password;
     @Nullable
+    private String role;
+    @Nullable
     private String error;
 
     LoginResult(@Nullable String error) {
         this.error = error;
     }
 
-    LoginResult(@Nullable User success, @Nullable String passwd) {
+    LoginResult(@Nullable User success, @Nullable String passwd, @Nullable String role) {
         this.success = success;
         this.password=passwd;
+        this.role=role;
     }
 
     @Nullable
@@ -37,5 +40,10 @@ class LoginResult {
     @Nullable
     String getError() {
         return error;
+    }
+
+    @Nullable
+    public String getRole() {
+        return role;
     }
 }

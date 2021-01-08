@@ -7,7 +7,7 @@ public class Game {
     private Integer maxPlayersNumber,minPlayersNumber, pitchId, visibility, players, duration;
     private String organizerLogin;
     private String schedule;
-    private String status, description;
+    private String status, description, result="";
 
     public Integer getGameId(){
         return gameId;
@@ -59,6 +59,14 @@ public class Game {
 
     public void setOrganizerLogin( String organiserLogin) {
         this.organizerLogin = organiserLogin;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
     }
 
     public String getSchedule() {

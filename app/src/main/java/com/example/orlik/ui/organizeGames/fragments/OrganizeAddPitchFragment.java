@@ -74,8 +74,13 @@ public class OrganizeAddPitchFragment extends Fragment {
             @Override
             public void onChanged(Pitch pitch) {
                 if(pitch!=null){
-                    Toast.makeText(context,"Dodano Boisko", Toast.LENGTH_LONG).show();
+                    Toast ToastMessage = Toast.makeText(requireContext(),"Dodano Boisko",Toast.LENGTH_SHORT);
+                    View toastView = ToastMessage.getView();
+                    toastView.setBackgroundColor(getResources().getColor(R.color.toastBackground));
+                    ToastMessage.show();
                    getParentFragmentManager().popBackStack();
+                }else{
+
                 }
             }
         });
@@ -94,7 +99,7 @@ public class OrganizeAddPitchFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         pitchTypeSpinner=(Spinner) view.findViewById(R.id.organize_addPitch_type_spinner);
-        organizeViewModel.setOrganizeSpinner(pitchTypeSpinner,R.array.pitch_choose_array);
+        organizeViewModel.setOrganizeSpinner(pitchTypeSpinner,R.array.pitch_array);
         pitchTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

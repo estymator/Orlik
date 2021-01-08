@@ -36,7 +36,8 @@ public class UserRequests {
                                      response.body().getLogin(),
                                      response.body().getName(),
                                      response.body().getSurname(),
-                                     response.body().getTrustRate());
+                                     response.body().getTrustRate(),
+                                     response.body().isValid());
 
                              loggedInUserSuccesfull(loggedInUser);
                          }else

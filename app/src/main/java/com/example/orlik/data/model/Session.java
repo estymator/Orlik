@@ -18,6 +18,7 @@ public class Session {
     public static final String PasswordKey = "passwordKey";
     public static final String UsernameKey = "usernameKey";
     public static final String userKey = "userKey";
+    public static final String roleKey = "RoleKey";
 
     public Session(Context context)
     {
@@ -35,6 +36,10 @@ public class Session {
     {
         editor.putString(UsernameKey,username);
         editor.putString(PasswordKey,password);
+        editor.commit();
+    }
+    public void setRole(String role){
+        editor.putString(roleKey, role);
         editor.commit();
     }
     public void setUser(User u){
@@ -80,12 +85,12 @@ public class Session {
     {
         String username=sharedPreferences.getString(UsernameKey,null);
 
-        if(username==null)
-        {
-            return null;
-        }else{
-            return username;
-        }
+        return username;
+    }
+
+    public String getRole(){
+        String role=sharedPreferences.getString(roleKey, null);
+        return role;
     }
 
 }

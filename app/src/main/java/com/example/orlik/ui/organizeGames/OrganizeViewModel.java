@@ -14,6 +14,7 @@ import com.example.orlik.Network.FriendsRequests;
 import com.example.orlik.Network.GameRequests;
 import com.example.orlik.Network.PitchRequests;
 import com.example.orlik.R;
+import com.example.orlik.data.adapters.PitchAdapter;
 import com.example.orlik.data.location.LocationGetter;
 import com.example.orlik.data.model.Game;
 import com.example.orlik.data.model.Pitch;
@@ -40,6 +41,7 @@ public class OrganizeViewModel extends ViewModel {
     private String gameDate="", gameTime="", visibility="public";
     private boolean organizerPlay=false;
     private String description="";
+    private Integer pitchRange=5;
     private Integer duration=90;
 
     //Data for addPitchFragment
@@ -47,6 +49,8 @@ public class OrganizeViewModel extends ViewModel {
     private String pitchAddress="";
     private double pitchLon=0,pitchLat=0;
     private String pitchType="Dowolny";
+
+
 
 
 
@@ -62,6 +66,14 @@ public class OrganizeViewModel extends ViewModel {
             e.printStackTrace();
         }
 
+    }
+
+    public Integer getPitchRange() {
+        return pitchRange;
+    }
+
+    public void setPitchRange(Integer pitchRange) {
+        this.pitchRange = pitchRange;
     }
 
     public void setPitchAddressAndLocalization(String pitchAddress) {
@@ -118,20 +130,22 @@ public class OrganizeViewModel extends ViewModel {
         this.description = description;
     }
 
-    public void addGameFormDataChanged(String description, String duration){
+    public void addGameFormDataChanged(){
         Integer durationInt=90;
         try{
             durationInt=Integer.valueOf(duration);
         }catch (Exception e){
-            this.addGameState.setValue(new AddGameFormState(false, true, false));
+            this.addGameState.setValue(new AddGameFormState(false,false, true, false));
             return;
         }
-        if(description.length()>30){
-            this.addGameState.setValue(new AddGameFormState(true, false, false));
+        if(minPlayersNumber>maxPlayersNumber){
+            this.addGameState.setValue(new AddGameFormState( true, false, false, false));
+        }else if(description.length()>30){
+            this.addGameState.setValue(new AddGameFormState(false, true, false, false));
         }else if(durationInt<0||durationInt>300){
-            this.addGameState.setValue(new AddGameFormState(false, true, false));
+            this.addGameState.setValue(new AddGameFormState(false,false, true, false));
         }else{
-            this.addGameState.setValue(new AddGameFormState(false,false, true));
+            this.addGameState.setValue(new AddGameFormState(false, false,false, true));
         }
     }
 
@@ -205,7 +219,7 @@ public class OrganizeViewModel extends ViewModel {
     }
 
     public void requestPitchList(){
-        pitchRequests.getPitchInGivenRange(locationGetter.getLat(),locationGetter.getLon(), 50, pitchList);
+        pitchRequests.getPitchInGivenRange(locationGetter.getLat(),locationGetter.getLon(), pitchRange, true, loggedInUser.getLogin(), pitchList);
     }
 
     public void setPitchesAdapter(Spinner s){
@@ -231,4 +245,53 @@ public class OrganizeViewModel extends ViewModel {
         gameRequests.addGame(loggedInUser.getLogin(), pitchId, maxPlayersNumber, minPlayersNumber, visibilityInt, (gameTime+" "+gameDate), description, duration, organizerPlay,addGameResult);//TODO add description login
     }
 
+
+//Data for PitchListFragment
+    private MutableLiveData<ArrayList<Pitch>> pitchListFragmentData = new MutableLiveData<>();
+    private ArrayList<Pitch> pitchListAdapterDataSet = new ArrayList<>();
+    private PitchAdapter pitchAdapter = new PitchAdapter(pitchListAdapterDataSet);
+
+//        Methods for PitchListFragment
+//        -----
+//        -----
+
+
+    public PitchAdapter getPitchAdapter() {
+        return pitchAdapter;
+    }
+
+    public MutableLiveData<ArrayList<Pitch>> getPitchListFragmentData() {
+        return pitchListFragmentData;
+    }
+
+
+    public ArrayList<Pitch> getPitchListAdapterDataSet() {
+        return pitchListAdapterDataSet;
+    }
+
+    public void getPitchListForFragment(){
+        pitchRequests.getPitchInGivenRange(locationGetter.getLat(),locationGetter.getLon(), pitchRange, true, loggedInUser.getLogin(), pitchListFragmentData);
+    }
+
+//    Data and methods for invalidPitchListFragment
+
+    private MutableLiveData<ArrayList<Pitch>> invalidPitchListResult = new MutableLiveData<>();
+    private ArrayList<Pitch> invalidPitchListAdapterDataSet = new ArrayList<>();
+    private PitchAdapter invalidPitchAdapter = new PitchAdapter(invalidPitchListAdapterDataSet);
+
+    public MutableLiveData<ArrayList<Pitch>> getInvalidPitchListResult() {
+        return invalidPitchListResult;
+    }
+
+    public ArrayList<Pitch> getInvalidPitchListAdapterDataSet() {
+        return invalidPitchListAdapterDataSet;
+    }
+
+    public PitchAdapter getInvalidPitchAdapter() {
+        return invalidPitchAdapter;
+    }
+
+    public void invalidPitchListRequest(){
+        pitchRequests.getPitchInGivenRange(locationGetter.getLat(),locationGetter.getLon(), 50, false, loggedInUser.getLogin(), getInvalidPitchListResult());
+    }
 }

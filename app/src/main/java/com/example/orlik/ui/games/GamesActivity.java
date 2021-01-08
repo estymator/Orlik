@@ -39,7 +39,8 @@ public class GamesActivity extends BasicActivity {
         bottomNavigationView = findViewById(R.id.main_toolbar);
         bottomNavigationView.setOnNavigationItemSelectedListener(this); //get handlers from parent class
         bottomNavigationView.setOnNavigationItemReselectedListener(this);
-        bottomNavigationView.setSelectedItemId(R.id.menu_item_games);
+        bottomNavigationView.setSelectedItemId(R.id.menu_item_search);
+        checkAdmin(bottomNavigationView);
 
         gamesViewModel.getGamesList().observe(this, new Observer<ArrayList<GameDTO>>() {
             @Override

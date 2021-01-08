@@ -1,7 +1,7 @@
 package com.example.orlik.ui.organizeGames.formsState;
 
 public class AddGameFormState {
-    private Boolean descriptionError, durationError, dataValid;
+    private Boolean descriptionError, durationError, playersNumberError , dataValid;
 
     public Boolean getDescriptionError() {
         return descriptionError;
@@ -27,7 +27,16 @@ public class AddGameFormState {
         this.dataValid = dataValid;
     }
 
-    public AddGameFormState(Boolean descriptionError, Boolean durationError, Boolean dataValid) {
+    public Boolean getPlayersNumberError() {
+        return playersNumberError;
+    }
+
+    public void setPlayersNumberError(Boolean playersNumberError) {
+        this.playersNumberError = playersNumberError;
+    }
+
+    public AddGameFormState(Boolean playersNumberError ,Boolean descriptionError, Boolean durationError, Boolean dataValid) {
+        this.playersNumberError=playersNumberError;
         this.descriptionError = descriptionError;
         this.durationError = durationError;
         this.dataValid = dataValid;

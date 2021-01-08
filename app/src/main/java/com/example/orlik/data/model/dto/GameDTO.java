@@ -1,8 +1,10 @@
 package com.example.orlik.data.model.dto;
 
-public class GameDTO {
+import java.io.Serializable;
+
+public class GameDTO implements Serializable {
     private int id, pitchId, maxPlayersNumber, minPlayersNumber, visibility, players, pitchRating, duration;
-    private String description, organizerLogin, schedule, status, location, address, pitchType;
+    private String description, organizerLogin, schedule, status, location, address, pitchType, result="", organiserName;
 
     public int getId() {
         return id;
@@ -14,6 +16,14 @@ public class GameDTO {
 
     public int getPitchId() {
         return pitchId;
+    }
+
+    public String getOrganiserName() {
+        return organiserName;
+    }
+
+    public void setOrganiserName(String organiserName) {
+        this.organiserName = organiserName;
     }
 
     public void setPitchId(int pitchId) {
@@ -120,6 +130,14 @@ public class GameDTO {
         return address;
     }
 
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
     public void setAddress(String address) {
         this.address = address;
     }
@@ -141,5 +159,31 @@ public class GameDTO {
         this.address = address;
         this.pitchType = pitchType;
         this.duration=duration;
+    }
+
+    public GameDTO() {
+    }
+
+    @Override
+    public String toString() {
+        return "GameDTO{" +
+                "id=" + id +
+                ", pitchId=" + pitchId +
+                ", maxPlayersNumber=" + maxPlayersNumber +
+                ", minPlayersNumber=" + minPlayersNumber +
+                ", visibility=" + visibility +
+                ", players=" + players +
+                ", pitchRating=" + pitchRating +
+                ", duration=" + duration +
+                ", description='" + description + '\'' +
+                ", organizerLogin='" + organizerLogin + '\'' +
+                ", schedule='" + schedule + '\'' +
+                ", status='" + status + '\'' +
+                ", location='" + location + '\'' +
+                ", address='" + address + '\'' +
+                ", pitchType='" + pitchType + '\'' +
+                ", result='" + result + '\'' +
+                ", organiserName='" + organiserName + '\'' +
+                '}';
     }
 }
