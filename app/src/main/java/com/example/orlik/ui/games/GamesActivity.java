@@ -8,9 +8,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.orlik.R;
-import com.example.orlik.data.model.Game;
+import com.example.orlik.data.model.Session;
 import com.example.orlik.data.model.dto.GameDTO;
 import com.example.orlik.ui.Basic.BasicActivity;
+import com.example.orlik.ui.games.fragments.GamesResultFragment;
+import com.example.orlik.ui.games.fragments.SearchGameFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -27,11 +29,12 @@ public class GamesActivity extends BasicActivity {
         gamesViewModel = new ViewModelProvider(this, new GamesViewModelFactory())
                 .get(GamesViewModel.class);
         setContentView(R.layout.activity_games);
+        gamesViewModel.setUser(new Session(this));
 
         if(savedInstanceState ==null){
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.games_fragment_container_view,SearchGameFragment.class , null)
+                    .add(R.id.games_fragment_container_view, SearchGameFragment.class , null)
                     .commit();
         }
         gamesViewModel.getLocalization(this);

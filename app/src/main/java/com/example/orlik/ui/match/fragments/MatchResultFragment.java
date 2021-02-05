@@ -54,7 +54,7 @@ public class MatchResultFragment extends Fragment {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                matchViewModel.sendResult(team1EditText.getText().toString()+" : "+team2EditText.getText().toString());
+                matchViewModel.sendResult(team1EditText.getText().toString()+" - "+team2EditText.getText().toString());
             }
         });
     }

@@ -15,7 +15,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NotificationRequests {
+public class  NotificationRequests {
     public final static String TAG="NotifiactionRequestsTAG";
     private ServerAPI serverAPI;
     private MutableLiveData<Notification> addNotificationResult;

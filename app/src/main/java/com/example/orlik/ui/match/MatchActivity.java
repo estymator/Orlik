@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.orlik.R;
 import com.example.orlik.data.model.Pitch;
+import com.example.orlik.data.model.PlayerStatistics;
 import com.example.orlik.data.model.PlayersGame;
 import com.example.orlik.data.model.Session;
 import com.example.orlik.data.model.dto.GameDTO;
@@ -34,6 +36,7 @@ import com.example.orlik.ui.organizeGames.fragments.OrganizeAddGameFragment;
 import com.example.orlik.ui.organizeGames.fragments.OrganizeAddPitchFragment;
 import com.example.orlik.ui.organizeGames.fragments.OrganizeInvalidPitchListFragment;
 import com.example.orlik.ui.organizeGames.fragments.OrganizePitchListFragment;
+import com.example.orlik.ui.pitch.PitchActivity;
 import com.example.orlik.ui.pitch.PitchViewModel;
 import com.example.orlik.ui.pitch.PitchViewModelFactory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -57,7 +60,7 @@ public class MatchActivity extends BasicActivity {
     private MapView mapView;
     private Button signUpButton, organiserDeleteButton, organiserAddResultButton, playerAddStatsButton;
     private TextView addressTextView, descriptionTextView, visibilityTextView, pitchRateTextView, membersTextView, dateTextView, minPlayersTextView, durationTextView,
-            organizerTextView, statusTextView, pitchTypeTextView, resultTextView, team1TextView, team2TextView;
+            organizerTextView, statusTextView, pitchTypeTextView, resultTextView, team1TextView, team2TextView, goalsTextView, assistsTextView;
 
     private FragmentContainerView fragmentContainerView;
     private BottomNavigationView bottomNavigationView;
@@ -85,9 +88,9 @@ public class MatchActivity extends BasicActivity {
                 ArrayList<String> parsedValuesTeam1 = new ArrayList<>(), parsedValuesTeam2 = new ArrayList<>();
                 parsedValuesTeam1.add("Zespół 1");
                 parsedValuesTeam2.add("Zespół 2");
+                int licznik1=0;
+                int licznik2=0;
                 for(int i=0;i<strings.size();i++){
-                    int licznik1=0;
-                    int licznik2=0;
                     String bufor = strings.get(i);
                     String[] array = bufor.split(":");
                     if(matchViewModel.getLoggedInUser().getLogin().equals(array[0])){
@@ -165,6 +168,22 @@ public class MatchActivity extends BasicActivity {
         signUpButton = (Button) findViewById(R.id.match_signUp_button);
 
         resultTextView = findViewById(R.id.match_result_textView);
+        assistsTextView=findViewById(R.id.match_assists_textView);
+        goalsTextView = findViewById(R.id.match_goals_textView);
+
+        matchViewModel.getStatistics().observe(this, new Observer<PlayerStatistics>() {
+            @Override
+            public void onChanged(PlayerStatistics playerStatistics) {
+                if(playerStatistics!=null){
+                    if(playerStatistics.getAssists()!=null&&playerStatistics.getGoals()!=null){
+                        assistsTextView.setText("Asysty: "+playerStatistics.getAssists());
+                        assistsTextView.setVisibility(View.VISIBLE);
+                        goalsTextView.setText("Gole: "+playerStatistics.getGoals());
+                        goalsTextView.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
 
         fragmentContainerView = findViewById(R.id.match_fragmentCointainerView);
 
@@ -192,6 +211,7 @@ public class MatchActivity extends BasicActivity {
             @Override
             public void onClick(View view) {
                 matchViewModel.addResultFragment();
+                organiserAddResultButton.setEnabled(false);
             }
         });
 
@@ -318,7 +338,7 @@ public class MatchActivity extends BasicActivity {
                 if(gameDTO!=null){
                     if(gameDTO.getStatus().equals("checked"))
                     {
-                        Toast ToastMessage = Toast.makeText(getApplicationContext(),"Mecz Dodany",Toast.LENGTH_SHORT);
+                        Toast ToastMessage = Toast.makeText(getApplicationContext(),"Wynik dodany",Toast.LENGTH_SHORT);
                         View toastView = ToastMessage.getView();
                         toastView.setBackgroundColor(getResources().getColor(R.color.toastBackground));
                         ToastMessage.show();
@@ -326,6 +346,30 @@ public class MatchActivity extends BasicActivity {
                         matchViewModel.getGame().setResult(gameDTO.getResult());
                         loadValues();
                     }
+                }
+            }
+        });
+
+        matchViewModel.getAddStatsResult().observe(this, new Observer<PlayerStatistics>() {
+            @Override
+            public void onChanged(PlayerStatistics playerStatistics) {
+                if(playerStatistics!=null){
+                    Intent intent = new Intent(getApplicationContext(), MatchActivity.class);
+                    intent.putExtra("match", matchViewModel.getGame());
+                    intent.putExtra("stats",playerStatistics);
+                    startActivity(intent);
+                }
+            }
+        });
+
+        matchViewModel.getGetStatsResult().observe(this, new Observer<PlayerStatistics>() {
+            @Override
+            public void onChanged(PlayerStatistics playerStatistics) {
+                if(playerStatistics!=null){
+                    goalsTextView.setText("Gole Strzelone: "+playerStatistics.getGoals());
+                    goalsTextView.setVisibility(View.VISIBLE);
+                    assistsTextView.setText("Asysty: "+playerStatistics.getAssists());
+                    assistsTextView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -417,7 +461,7 @@ public class MatchActivity extends BasicActivity {
         minPlayersTextView.setText("Przedział graczy: "+matchViewModel.getGame().getMinPlayersNumber()+"-"+matchViewModel.getGame().getMaxPlayersNumber());
         dateTextView.setText(matchViewModel.getGame().getSchedule());
         String members=matchViewModel.getGame().getPlayers()+"/"+matchViewModel.getGame().getMaxPlayersNumber();
-        membersTextView.setText("Zapisani"+members);
+        membersTextView.setText("Zapisani "+members);
         pitchRateTextView.setText("Ocena boiska: "+matchViewModel.getGame().getPitchRating());
         String visibility = (matchViewModel.getGame().getVisibility()==1) ? "publiczny" : "prywatny";
         visibilityTextView.setText("Mecz "+visibility);
@@ -436,15 +480,24 @@ public class MatchActivity extends BasicActivity {
         }else{
             organiserDeleteButton.setVisibility(View.GONE);
         }
-
+        //TODO dodanie logiki do zapisu wyników, wygrane mecze użytkownika i wszystkie mecze uzytkownika
+        //TODO dodanie komunikatu o braku meczy do zatwierdzenia w statystykach
         if(matchViewModel.getGame().getStatus().equals("checked")){
-            fragmentContainerView.setVisibility(View.GONE);
+            playerAddStatsButton.setVisibility(View.VISIBLE);
             resultTextView.setText("Wynik: "+matchViewModel.getGame().getResult());
             resultTextView.setVisibility(View.VISIBLE);
             signUpButton.setVisibility(View.GONE);
             organiserDeleteButton.setVisibility(View.GONE);
         }else {
             playerAddStatsButton.setVisibility(View.GONE);
+        }
+
+        if(matchViewModel.getGame().getStatus().equals("completed")){
+            resultTextView.setText("Wynik: "+matchViewModel.getGame().getResult());
+            resultTextView.setVisibility(View.VISIBLE);
+            signUpButton.setVisibility(View.GONE);
+            organiserDeleteButton.setVisibility(View.GONE);
+            matchViewModel.getStats();
         }
     }
 }

@@ -13,6 +13,8 @@ import com.example.orlik.R;
 import com.example.orlik.data.location.LocationGetter;
 import com.example.orlik.data.model.Game;
 import com.example.orlik.data.model.Pitch;
+import com.example.orlik.data.model.Session;
+import com.example.orlik.data.model.User;
 import com.example.orlik.data.model.dto.GameDTO;
 
 import java.util.ArrayList;
@@ -26,6 +28,11 @@ public class GamesViewModel extends ViewModel{
     private String pitchItem;
     private String rangeItem;
     private GameRequests gameRequests = new GameRequests();
+    private User user;
+
+    public void setUser(Session session){
+        user = (User) session.getUser();
+    }
 
     public MutableLiveData<ArrayList<Pitch>> getSearchResult() {
         return searchResult;
@@ -49,7 +56,7 @@ public class GamesViewModel extends ViewModel{
         {
             Log.v(TAG, e.getMessage());
         }
-        gameRequests.loadGames(lat,lon, rangeInt, pitchChoose, gamesList);
+        gameRequests.loadGames(lat,lon, rangeInt, pitchChoose, user.getLogin(), gamesList);
     }
 
     public void getLocalization(Context context)

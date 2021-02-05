@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.orlik.R;
+import com.example.orlik.data.model.Pitch;
 import com.example.orlik.data.model.User;
 import com.example.orlik.ui.Basic.BasicActivity;
 import com.example.orlik.ui.organizeGames.fragments.OrganizeAddGameFragment;
@@ -27,7 +28,7 @@ public class OrganizeActivity extends BasicActivity {
         organizeViewModel= new ViewModelProvider(this, new OrganizeViewModelFactory())
                 .get(OrganizeViewModel.class);
         organizeViewModel.setContext(this);
-        int pitchId =(int) getIntent().getIntExtra("pitch", 0);
+        Pitch pitch =(Pitch) getIntent().getSerializableExtra("pitch");
 
         setContentView(R.layout.activity_organize);
         bottomNavigationView = findViewById(R.id.main_toolbar);
@@ -37,7 +38,8 @@ public class OrganizeActivity extends BasicActivity {
         checkAdmin(bottomNavigationView);
 
         if(savedInstanceState ==null){
-            if(pitchId>0){
+            if(pitch!=null){
+                organizeViewModel.setPreSelectedPitch(pitch);
                 getSupportFragmentManager().beginTransaction()
                         .setReorderingAllowed(true)
                         .addToBackStack(null)

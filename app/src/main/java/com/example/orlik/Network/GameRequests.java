@@ -24,11 +24,11 @@ public class GameRequests {
     private MutableLiveData<GameDTO> addResult;
     private MutableLiveData<Boolean> deleteGameResult;
 
-    public void loadGames(double lat, double lon, int range, String type, MutableLiveData<ArrayList<GameDTO>> gamesList){
+    public void loadGames(double lat, double lon, int range, String type,String login, MutableLiveData<ArrayList<GameDTO>> gamesList){
         this.gamesList=gamesList;
         serverAPI = RetrofitServiceGenerator.createService(ServerAPI.class);
         try{
-            Call<ArrayList<GameDTO>> getGamesCall = serverAPI.getGames(lat,lon,range,type);
+            Call<ArrayList<GameDTO>> getGamesCall = serverAPI.getGames(lat,lon,range,type, login);
             getGamesCall.enqueue(new Callback<ArrayList<GameDTO>>(){
                 @Override
                 public void onResponse(Call<ArrayList<GameDTO>> call, Response<ArrayList<GameDTO>> response) {

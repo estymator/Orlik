@@ -120,7 +120,6 @@ public class GamesResultAdapter extends RecyclerView.Adapter<GamesResultAdapter.
         }
         viewHolder.getPitchTypeTextView().setText(gamesSearchResult.get(position).getPitchType());
         viewHolder.getVisibilityTextView().setText("Widoczność: "+visibility);
-        viewHolder.setBackground(R.color.gamesAdapterBackground);
 
         viewHolder.getShowMatchButton().setOnClickListener(new View.OnClickListener() {
             @Override

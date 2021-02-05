@@ -48,7 +48,7 @@ public class OrganizeAddGameFragment extends Fragment {
     private static final String TAG = "OrganizeAddGameFragment";
     private OrganizeViewModel organizeViewModel;
     private Spinner maxPlayersSpinner, minPlayersSpinner, visibilitySpinner, pitchSpinner, pitchRangeSpinner;
-    private TextView gameDate, gameTime, minPlayersTextView;
+    private TextView gameDate, gameTime, minPlayersTextView, pitchRangeTextView;
     private EditText descriptionEditText, durationEditText;
     private CheckBox isOrganizerPlaying;
     Button addGameButton;
@@ -99,7 +99,12 @@ public class OrganizeAddGameFragment extends Fragment {
                 String desc=descriptionEditText.getText().toString();
                 String duration = durationEditText.getText().toString();
                 organizeViewModel.setDescription(desc);
-                organizeViewModel.setDuration(Integer.parseInt(duration));
+                try {
+                    organizeViewModel.setDuration(Integer.parseInt(duration));
+                }catch (Exception e){
+                    organizeViewModel.setDuration(0);
+                    organizeViewModel.addGameFormDataChanged();
+                }
                 organizeViewModel.addGameFormDataChanged();
             }
         };
@@ -118,7 +123,11 @@ public class OrganizeAddGameFragment extends Fragment {
                     durationEditText.setError("Błędne dane");
                 }else{
                     minPlayersTextView.setError(null);
-                    organizeViewModel.setDuration(Integer.valueOf(durationEditText.getText().toString()));
+                    try {
+                        organizeViewModel.setDuration(Integer.valueOf(durationEditText.getText().toString()));
+                    }catch (Exception e){
+                        organizeViewModel.setDuration(0);
+                    }
                     organizeViewModel.setDescription(descriptionEditText.getText().toString());
                 }
             }
@@ -179,6 +188,8 @@ public class OrganizeAddGameFragment extends Fragment {
             }
         });
 
+        pitchRangeTextView = view.findViewById(R.id.organize_addGame_pitchRange_textView);
+
         pitchRangeSpinner = view.findViewById(R.id.organize_pitchRange_spinner);
         organizeViewModel.setOrganizeSpinner(pitchRangeSpinner, R.array.distance_array);
         pitchRangeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -215,7 +226,16 @@ public class OrganizeAddGameFragment extends Fragment {
 
             }
         });
-        organizeViewModel.requestPitchList();
+        if(organizeViewModel.getPreSelectedPitch()!=null){
+            pitchRangeSpinner.setVisibility(View.GONE);
+            pitchRangeTextView.setVisibility(View.GONE);
+            ArrayList<Pitch> bufor = new ArrayList<>();
+            bufor.add(organizeViewModel.getPreSelectedPitch());
+            organizeViewModel.getPitchList().setValue(bufor);
+
+        }else{
+            organizeViewModel.requestPitchList();
+        }
 
         gameDate = (TextView) view.findViewById(R.id.organize_gameDate_TextView);
         String dayS=day+"", monthS=month+"";
@@ -236,8 +256,12 @@ public class OrganizeAddGameFragment extends Fragment {
         });
 
         gameTime = (TextView) view.findViewById(R.id.organize_gameTime_TextView); //TODO prevent same day on earlier hour than current
-        gameTime.setText((hour+":00"));
-        organizeViewModel.setGameTime(hour+":00");
+        String hourS = hour+"";
+        if(hour<10){
+            hourS="0"+hour;
+        }
+        gameTime.setText((hourS+":00"));
+        organizeViewModel.setGameTime(hourS+":00");
         gameTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -277,7 +301,7 @@ public class OrganizeAddGameFragment extends Fragment {
         month=date.get(Calendar.MONTH);
         month=month+1;
         year=date.get(Calendar.YEAR);
-        hour=(date.get(Calendar.HOUR_OF_DAY)==24)? 00:(date.get(Calendar.HOUR_OF_DAY)+2);
+        hour=(date.get(Calendar.HOUR_OF_DAY)==23)? 00:(date.get(Calendar.HOUR_OF_DAY)+2);
     }
 
 }

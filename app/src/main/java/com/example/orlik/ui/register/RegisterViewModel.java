@@ -34,6 +34,8 @@ public class RegisterViewModel extends ViewModel {
 
     }
 
+    //TODO kiedy nie ma znalezionych uzytkowników wyswietlic komunikat o braku wynikow =modul wyszukiwania uztkownikow
+
     public void registerDataChanged(String username, String password, String secPassword, String name, String surname) {
         if (!isUserNameValid(username)) {
             registerFormState.setValue(new RegisterFormState(R.string.invalid_username, null, null, null, null));
@@ -55,6 +57,8 @@ public class RegisterViewModel extends ViewModel {
     private boolean isUserNameValid(String username) {
         if (username == null) {
             return false;
+        }if(username.length()<3){
+            return false;
         }
         if (username.contains("@")) {
             return Patterns.EMAIL_ADDRESS.matcher(username).matches();
@@ -70,12 +74,38 @@ public class RegisterViewModel extends ViewModel {
 
     private boolean isNameValid(String name)
     {
-        return name != null && name.trim().length() > 2;
+        if(name==null){
+            return false;
+        }
+        if(name.trim().length() < 3){
+            return false;
+        }
+        for (int i = 0; i < name.length(); i++) {
+            char bufor = name.charAt(i);
+            if(!Character.isLetter(bufor))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean isSurnameValid(String surname)
     {
-        return surname != null && surname.trim().length() > 2;
+        if(surname==null){
+            return false;
+        }
+        if(surname.trim().length() < 3){
+            return false;
+        }
+        for (int i = 0; i < surname.length(); i++) {
+            char bufor = surname.charAt(i);
+            if(!Character.isLetter(bufor))
+            {
+                return false;
+            }
+        }
+        return true;
     }
     private boolean isSecPasswordValid(String secPassword, String password)
     {

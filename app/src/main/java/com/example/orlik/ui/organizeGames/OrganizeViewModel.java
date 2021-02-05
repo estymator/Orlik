@@ -43,6 +43,7 @@ public class OrganizeViewModel extends ViewModel {
     private String description="";
     private Integer pitchRange=5;
     private Integer duration=90;
+    private Pitch PreSelectedPitch=null;
 
     //Data for addPitchFragment
     private MutableLiveData<Pitch> addPitchResult = new MutableLiveData<>();
@@ -86,6 +87,14 @@ public class OrganizeViewModel extends ViewModel {
         this.pitchAddress = pitchAddress;
         this.pitchLat=lat;
         this.pitchLon=lon;
+    }
+
+    public Pitch getPreSelectedPitch() {
+        return PreSelectedPitch;
+    }
+
+    public void setPreSelectedPitch(Pitch preSelectedPitch) {
+        PreSelectedPitch = preSelectedPitch;
     }
 
     public String getPitchAddress() {
@@ -142,7 +151,7 @@ public class OrganizeViewModel extends ViewModel {
             this.addGameState.setValue(new AddGameFormState( true, false, false, false));
         }else if(description.length()>30){
             this.addGameState.setValue(new AddGameFormState(false, true, false, false));
-        }else if(durationInt<0||durationInt>300){
+        }else if(durationInt<=0||durationInt>300){
             this.addGameState.setValue(new AddGameFormState(false,false, true, false));
         }else{
             this.addGameState.setValue(new AddGameFormState(false, false,false, true));
@@ -271,6 +280,10 @@ public class OrganizeViewModel extends ViewModel {
 
     public void getPitchListForFragment(){
         pitchRequests.getPitchInGivenRange(locationGetter.getLat(),locationGetter.getLon(), pitchRange, true, loggedInUser.getLogin(), pitchListFragmentData);
+    }
+
+    public void getPitchListForFragment(int range){
+        pitchRequests.getPitchInGivenRange(locationGetter.getLat(),locationGetter.getLon(), range, true, loggedInUser.getLogin(), pitchListFragmentData);
     }
 
 //    Data and methods for invalidPitchListFragment

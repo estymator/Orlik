@@ -85,7 +85,7 @@ public class PitchActivity extends BasicActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(view.getContext(), OrganizeActivity.class);
-                    intent.putExtra("pitch",pitchViewModel.getPitch().getPitchId());
+                    intent.putExtra("pitch",pitchViewModel.getPitch());
                     view.getContext().startActivity(intent);
                 }
             });
@@ -119,10 +119,15 @@ public class PitchActivity extends BasicActivity {
                         pitchViewModel.confirmPitchAsAdmin();
                     }
                 });
+            }else{
+                pitchAdminButton.setVisibility(View.GONE);
             }
+        }else{
+            pitchRemoveAdminButton.setVisibility(View.GONE);
+            pitchAdminButton.setVisibility(View.GONE);
         }
 
-
+        //TODO widok meczu wyrównanie widoku jesli w team 2 jest wiecej graczy niz w team 1
         pitchMap = (MapView) findViewById(R.id.pitch_mapView);
         setMap(pitchMap);
 
@@ -131,7 +136,10 @@ public class PitchActivity extends BasicActivity {
             public void onChanged(PitchConfirmations pitchConfirmations) {
                 if(pitchConfirmations!=null){
                     if(pitchConfirmations.getPitchId().equals(pitchViewModel.getPitch().getPitchId())){
-                        Toast.makeText(getApplicationContext(),"Potwierdzono Boisko", Toast.LENGTH_LONG).show();
+                        Toast ToastMessage = Toast.makeText(getApplicationContext(),"Potwierdzono boisko",Toast.LENGTH_SHORT);
+                        View toastView = ToastMessage.getView();
+                        toastView.setBackgroundColor(getResources().getColor(R.color.toastBackground));
+                        ToastMessage.show();
                         Intent intent = new Intent(getApplicationContext(), OrganizeActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
@@ -144,7 +152,10 @@ public class PitchActivity extends BasicActivity {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if(aBoolean){
-                    Toast.makeText(getApplicationContext(),"Usunięto Boisko", Toast.LENGTH_LONG).show();
+                    Toast ToastMessage = Toast.makeText(getApplicationContext(),"Boisko Usuniete",Toast.LENGTH_SHORT);
+                    View toastView = ToastMessage.getView();
+                    toastView.setBackgroundColor(getResources().getColor(R.color.toastBackground));
+                    ToastMessage.show();
                     Intent intent = new Intent(getApplicationContext(), OrganizeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -156,7 +167,10 @@ public class PitchActivity extends BasicActivity {
             @Override
             public void onChanged(Pitch pitch) {
                 if(pitch.isValid()){
-                    Toast.makeText(getApplicationContext(),"Boisko zostało zatwierdzone", Toast.LENGTH_LONG).show();
+                    Toast ToastMessage = Toast.makeText(getApplicationContext(),"Boisko zatwierdzone przez Administratora",Toast.LENGTH_SHORT);
+                    View toastView = ToastMessage.getView();
+                    toastView.setBackgroundColor(getResources().getColor(R.color.toastBackground));
+                    ToastMessage.show();
                     Intent intent = new Intent(getApplicationContext(), OrganizeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);

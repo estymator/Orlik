@@ -13,8 +13,12 @@
     <color name="dialogTextColor">#45494d</color>
     <color name="dialogHighlight">#53aabd</color>
 
-    <color name="gamesAdapterBackground">#111111</color>
+    <color name="gamesAdapterBackground">#122b3b</color>
 
-    <color name="toastBackground">#1d821e</color>
+    <color name="pitchAdapterBackground">#1c3830</color>
+
+    <color name="toastBackground">#144810</color>
     <color name="toastFailedBackground">#7d0d09</color>
+
+
 </resources>

@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.orlik.R;
-import com.example.orlik.ui.games.GamesResultFragment;
 import com.example.orlik.ui.organizeGames.OrganizeViewModel;
 import com.example.orlik.ui.organizeGames.OrganizeViewModelFactory;
 

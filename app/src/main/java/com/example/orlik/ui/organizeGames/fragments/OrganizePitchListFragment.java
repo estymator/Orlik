@@ -67,7 +67,7 @@ public class OrganizePitchListFragment extends Fragment {
         pitchRecyclerView = (RecyclerView) view.findViewById(R.id.organize_pitchList_recyclerView);
         pitchRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         pitchRecyclerView.setAdapter(organizeViewModel.getPitchAdapter());
-        organizeViewModel.getPitchListForFragment();
+        organizeViewModel.getPitchListForFragment(50);
 
     }
 }

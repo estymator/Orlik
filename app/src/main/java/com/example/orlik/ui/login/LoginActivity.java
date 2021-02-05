@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
     private static final String TAG = "LoginActivity";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.v(TAG, "onCreate");
@@ -171,6 +172,13 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed(){
 
         moveTaskToBack(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final Button registerRedirectButton = findViewById(R.id.registerRedirectionButton);
+        registerRedirectButton.setEnabled(true);
     }
 
 

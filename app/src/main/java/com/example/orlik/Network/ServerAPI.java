@@ -5,6 +5,7 @@ import com.example.orlik.data.model.Game;
 import com.example.orlik.data.model.Notification;
 import com.example.orlik.data.model.Pitch;
 import com.example.orlik.data.model.PitchConfirmations;
+import com.example.orlik.data.model.PlayerStatistics;
 import com.example.orlik.data.model.PlayersGame;
 import com.example.orlik.data.model.User;
 import com.example.orlik.data.model.dto.GameDTO;
@@ -159,7 +160,8 @@ public interface ServerAPI {
             @Query("lat") double lat,
             @Query("lon") double lon,
             @Query("range") int range,
-            @Query("pitchType") String pitchType
+            @Query("pitchType") String pitchType,
+            @Query("login") String login
     );
 
     @GET("/game/organiser/finished")
@@ -169,6 +171,11 @@ public interface ServerAPI {
 
     @GET("/game/checked")
     Call<ArrayList<GameDTO>> getGamesChecked(
+            @Query("login") String login
+    );
+
+    @GET("/game/completed")
+    Call<ArrayList<GameDTO>> getGamesCompleted(
             @Query("login") String login
     );
 
@@ -302,6 +309,22 @@ public interface ServerAPI {
         @Query("destinationLogin") String destinationLogin,
         @Query("type") Integer type
     );
+
+    @GET("/stats")
+    Call<PlayerStatistics> getStats(
+            @Query("login") String login,
+            @Query("gameId") Integer gameId
+    );
+
+    @POST("/stats")
+    Call<PlayerStatistics> addStats(
+        @Query("login") String login,
+        @Query("gameId") Integer gameId,
+        @Query("goals") Integer goals,
+        @Query("assists") Integer assists
+    );
+
+
 
     /**
      * Delete given pitch, only for admins

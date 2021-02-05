@@ -44,7 +44,6 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText surnameEditText = findViewById(R.id.surnameText);
         final Button registerButton = findViewById(R.id.registerButton);
 
-
         registerViewModel.getRegisterFormState().observe(this, new Observer<RegisterFormState>() {
             @Override
             public void onChanged(@Nullable RegisterFormState registerFormState) {
@@ -153,4 +152,5 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
 }

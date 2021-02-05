@@ -1,4 +1,4 @@
-package com.example.orlik.ui.games;
+package com.example.orlik.ui.games.fragments;
 
 import android.os.Bundle;
 
@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 
 import com.example.orlik.R;
 import com.example.orlik.data.adapters.GamesResultAdapter;
+import com.example.orlik.ui.games.GamesViewModel;
+import com.example.orlik.ui.games.GamesViewModelFactory;
 
 /**
  * A simple {@link Fragment} subclass.

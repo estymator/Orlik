@@ -20,9 +20,9 @@
     <string name="action_register">Załóż konto</string>
     <string name="action_sign_in_short">Zaloguj się</string>
     <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Niepoprawny email</string>
-    <string name="invalid_name">Niepoprawne imie</string>
-    <string name="invalid_surname">Niepoprawne nazwisko</string>
+    <string name="invalid_username">Login musi posiadać co najmniej 3 znaki</string>
+    <string name="invalid_name">Imie musi posiadać co najmniej 3 znaki</string>
+    <string name="invalid_surname">Nazwisko musi posiadać co najmniej 3 znaki</string>
     <string name="invalid_password">Hasło musi posiadać co najmniej 5 znaków</string>
     <string name="invalid_sec_password">Różne hasła</string>
     <string name="login_failed">"Logowanie nieudane"</string>

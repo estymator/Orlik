@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.orlik.Network.GameRequests;
 import com.example.orlik.Network.PlayersGameRequests;
+import com.example.orlik.Network.StatsRequests;
+import com.example.orlik.data.model.PlayerStatistics;
 import com.example.orlik.data.model.PlayersGame;
 import com.example.orlik.data.model.User;
 import com.example.orlik.data.model.dto.GameDTO;
@@ -17,6 +19,7 @@ public class MatchViewModel extends ViewModel {
     private User loggedInUser;
     private PlayersGameRequests playersGameRequests = new PlayersGameRequests();
     private GameRequests gameRequests = new GameRequests();
+    private StatsRequests statsRequests = new StatsRequests();
     private ArrayList<String> playersName= new ArrayList<>();
     private MutableLiveData<ArrayList<String>> getPlayersOfGameResult = new MutableLiveData<>();
     private MutableLiveData<Boolean> optOutPlayerResult = new MutableLiveData<>();
@@ -27,6 +30,9 @@ public class MatchViewModel extends ViewModel {
     private MutableLiveData<String> errorFlag = new MutableLiveData<>();
     private MutableLiveData<String> fragmentNavigator = new MutableLiveData<>("");
     private MutableLiveData<GameDTO> addResult = new MutableLiveData<>();
+    private MutableLiveData<PlayerStatistics> Statistics = new MutableLiveData<>();
+
+
 
     public GameDTO getGame() {
         return game;
@@ -46,6 +52,7 @@ public class MatchViewModel extends ViewModel {
 
     public void setLoggedInUser(User loggedInUser) {
         this.loggedInUser = loggedInUser;
+        statsRequests.getStats(loggedInUser.getLogin(), game.getId(), Statistics);
     }
 
     public int getTeam1Size() {
@@ -134,4 +141,28 @@ public class MatchViewModel extends ViewModel {
     public void sendResult(String result){
         gameRequests.addResultToGame(game.getId(), result, addResult);
     }
+
+    private MutableLiveData<PlayerStatistics> addStatsResult = new MutableLiveData<>();
+    private MutableLiveData<PlayerStatistics> getStatsResult = new MutableLiveData<>();
+
+    public MutableLiveData<PlayerStatistics> getAddStatsResult() {
+        return addStatsResult;
+    }
+
+    public MutableLiveData<PlayerStatistics> getGetStatsResult() {
+        return getStatsResult;
+    }
+
+    public void addStats(int goals, int assists){
+        statsRequests.addStats(loggedInUser.getLogin(), game.getId(), goals, assists, addStatsResult);
+    }
+
+    public void getStats(){
+        statsRequests.getStats(loggedInUser.getLogin(), game.getId(), getStatsResult);
+    }
+
+    public MutableLiveData<PlayerStatistics> getStatistics() {
+        return Statistics;
+    }
+
 }
